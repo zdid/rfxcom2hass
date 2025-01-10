@@ -22,8 +22,8 @@ using [MQTT discovery](https://www.home-assistant.io/integrations/mqtt#mqtt-disc
 This allows Rfxcom2hass to semi-automatically add devices to Home Assistant.
 
 A dedicated panel on home assistant allows the setting of new rfx inputs. (New Rfx Device in MQTT appareils )
-Automatic Discovery is disable.
-<img align="left" height="200px"  src="newrfxdevice.png">
+Automatic Discovery is disable by default.
+<img align="left"  src="newrfxdevice.png">
 Panel New Rfx Device
 (Create and modify existant Rfx Device)
 Enable  discovery on panel 
