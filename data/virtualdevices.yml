@@ -20,6 +20,7 @@ VD_000001:
   appaired:
     - lighting2_AC_0x017334A2_10
   ref_appaired: lighting2_AC_0x017334A2_10
+  
 VD_000002:
   protocol: DioReceiver
   exists_choice: essai

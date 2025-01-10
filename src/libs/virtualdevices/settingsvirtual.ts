@@ -5,6 +5,7 @@ export interface SettingVirtualDevice   extends SettingMinDevice {
     appaired: string[];
     ref_appaired: string;
 }
+
 export interface SettingDioReceiver extends SettingVirtualDevice {
     closeduration: any;
     openduration: any;

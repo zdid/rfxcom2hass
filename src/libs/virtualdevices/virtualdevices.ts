@@ -7,9 +7,7 @@ import { SettingHass} from "../settings";
 import { onEvenement } from "../utils";
 import { SettingVirtualDevice } from "./settingsvirtual";
 
-
 var logger = new Logger(__filename);
-
 
 export class VirtualDevice extends AbstractDevice {
     protected virtualDevice: SettingVirtualDevice;

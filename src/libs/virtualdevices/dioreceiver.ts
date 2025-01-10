@@ -19,6 +19,7 @@ const datanames = {
   onofflevel : ['switch', 'level', 'toogle'], 
   cover : [ 'cover' ]  //opencover', 'closecover', 'stopcover', 'positioncover', 'tooglecover']
   }
+
 const STATE = {
   OPEN: 'open',
   CLOSED: 'closed',
@@ -26,8 +27,10 @@ const STATE = {
   OPENING: 'opening',
   STOPPED: 'stopped'
 }
+
 const ON = 'on'
 const OFF = 'off' 
+
 export class DioReceiver extends VirtualDevice{
   private positionpercent: number;
   private statecover: string;

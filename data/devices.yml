@@ -8,7 +8,7 @@ lighting2_AC_0x017334A2_10:
   unit_code: 10
   name: bouton bas escalier
   protocolOptions: []
-  repetitions: 2
+  repetitions: 3
   sensors_types:
     - level
     - rssi

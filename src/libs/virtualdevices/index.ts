@@ -11,7 +11,6 @@ import { SettingDioReceiver, SettingVirtualDevice } from "./settingsvirtual";
 
 var logger = new Logger(__filename)
 
-
 /**
  * Creation of additional HomeAssistant config panels for setting up virtual devices
  * Each component must have a different protocol

@@ -14,8 +14,7 @@ device:
     device_class: null
     state_class: null
     unit_of_measurement: null
-    command_topic: set
-    
+    command_topic: set 
   level: 
     platform: sensor
     enabled_by_default: true

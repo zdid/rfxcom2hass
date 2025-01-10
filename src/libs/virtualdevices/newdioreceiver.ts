@@ -16,7 +16,6 @@ interface SettingNewDioReceiver extends SettingDioReceiver {
     message?: string;
 }
 
-
 export class NewDioReceiverDevice extends AbstractDevice {
     static dataNames = [
         'exists_choice',
