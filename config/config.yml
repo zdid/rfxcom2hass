@@ -1,0 +1,37 @@
+mock: false
+loglevel: debug
+healthcheckminutesfrequency: 5
+homeassistant:
+  discovery: false
+  base_topic: rfxcom2hass
+  discovery_bridge_unique_id: bridge_000001
+  topics:
+    discovery: homeassistant/device/%discovery_bridge_unique_id%/%device_unique_id%/config
+    command: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/%sensortype%"
+    state: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/state"
+    will: "%base_topic%/%discovery_bridge_unique_id%/status"
+    homeassistant_availability: homeassistant/status
+    ecoute: "%base_topic%/%discovery_bridge_unique_id%/#"
+mqtt:
+  base_topic: rfxcom2hass
+  include_device_information: false
+  qos: 0
+  retain: true
+  server: tcp://homeassistant.local
+  username: dimotic
+  password: G2filles
+  format_json: true
+rfxcom:
+  debug: false
+  enable_protocols:
+    - AC
+    - ARC
+    - LIGHTWAVERF
+    - OREGON
+    - X10
+  usbport: /dev/ttyUSB0
+  transmit:
+    repeat: 2
+cacheDevices:
+  enable: true,
+  saveInterval: 1

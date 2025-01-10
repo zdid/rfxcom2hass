@@ -1,0 +1,448 @@
+device:
+  _default:
+    platform: sensor
+    enabled_by_default: true
+    value_template: "{{ value_json.command }}"
+  switch:
+    platform: switch
+    enabled_by_default: true
+    payload_off: Off
+    payload_on: On
+    state_off: Off
+    state_on: On
+    value_template: "{{ value_json.command }}"
+    device_class: null
+    state_class: null
+    unit_of_measurement: null
+    command_topic: set
+    
+  level: 
+    platform: sensor
+    enabled_by_default: true
+    value_template: "{{ value_json.level }}"
+    device_class: null
+    state_class: measurement
+    unit_of_measurement: null
+    command_topic: setlevel
+
+  rssi:
+    platform: sensor
+    device_class: signal_strength
+    state_class: measurement
+    entity_category: diagnostic
+    icon: mdi:signal
+    name: Rssi
+    value_template: "{{ value_json.rssi }}"
+    unit_of_measurement: dBm
+  date:
+    platform: sensor
+    device_class: timestamp
+    state_class: measurement
+    entity_category: diagnostic
+    icon: mdi:date
+    name: date
+    value_template: "{{ value_json.date }}"
+    unit_of_measurement: ""
+  temperature:
+    platform: sensor
+    device_class: temperature
+    state_class: measurement
+    icon: mdi:thermometer
+    name: Temperature
+    value_template: "{{ value_json.temperature }}"
+    unit_of_measurement: °C
+  humidity:
+    platform: sensor
+    device_class: humidity
+    state_class: measurement
+    icon: mdi:humidity
+    name: Humidity
+    value_template: "{{ value_json.humidity }}"
+    unit_of_measurement: "%RH"
+  battery:
+    platform: sensor
+    device_class: battery
+    entity_category: diagnostic
+    state_class: measurement
+    icon: mdi:battery
+    name: Battery
+    value_template: "{{ value_json.battery }}"
+    unit_of_measurement: "%RH"
+  batterylevel:
+    platform: sensor
+    device_class: battery
+    entity_category: diagnostic
+    state_class: measurement
+    icon: mdi:battery
+    name: Battery
+    value_template: "{{ value_json.batterylevel }}"
+    unit_of_measurement: ""
+  current:
+    platform: sensor
+    device_class: current
+    state_class: measurement
+    name: Current
+    value_template: "{{ value_json.current }}"
+    unit_of_measurement: A
+  cover:
+    platform: cover
+    device_class: cover
+    icon: mdi:window-shutter
+    name: Cover
+    value_template: "{{ value_json.command }}"
+    position_template: "{{ value_json.position }}"
+    payload_open: opencover
+    payload_close: closecover
+    payload_stop: stopcover
+    position_open: 100
+    position_closed: 0
+    state_open: open
+    state_closed: closed
+    state_opening: opening
+    state_closing: closing
+    state_stopped: stopped
+    set_position_topic: setpositioncover
+    position_topic: state
+    state_topic: state
+    command_topic: set
+    set_command_template: {{ command }}
+    set_position_template: "{{ position }}"
+
+bridge:
+  receiverType:
+    platform: sensor
+    entity_category: diagnostic
+    name: Type de recepteur
+    enabled_by_default: true
+    value_template: "{{ value_json.receiverType }}"
+  addprotocol:
+    platform: select
+    entity_category: config
+    name: Recevoir un nouveau protocol
+    enabled_by_default: true
+    value_template: "{{ value_json.addprotocol }}"
+    device_class: enum
+    command_topic: addprotocol
+    options: 
+      - debug
+  subtractprotocol:
+    platform: select
+    entity_category: config
+    name: Supprimer un protocol
+    enabled_by_default: true
+    value_template: "{{ value_json.subtractprotocol }}"
+    device_class: enum
+    command_topic: subtractprotocol
+    options: 
+      - debug
+  version:
+    name: Version de Rfxcom2hass 
+    entity_category: diagnostic
+    platform: sensor
+    enabled_by_default: true
+    value_template: "{{ value_json.version }}"
+  hardwareVersion:
+    name: Version du recepteur (hardware)
+    entity_category: diagnostic
+    platform: sensor
+    enabled_by_default: true
+    value_template: "{{ value_json.hardwareVersion }}"
+  firmwareVersion:
+    name: Version du micrologiciel (dc)
+    platform: sensor
+    entity_category: diagnostic
+    enabled_by_default: true
+    value_template: "{{ value_json.firmwareVersion }}"
+  firmwareType:
+    platform: sensor
+    entity_category: diagnostic
+    name: Type de micrologiciel
+    enabled_by_default: true
+    value_template: "{{ value_json.firmwareType }}"
+  transmitterPower:
+    platform: sensor
+    entity_category: diagnostic
+    name: Transmit power
+    enabled_by_default: true
+    value_template: "{{ value_json.transmitterPower }}"
+  logLevel:
+    platform: select
+    entity_category: config
+    name: Niveau de log
+    enabled_by_default: true
+    value_template: "{{ value_json.logLevel }}"
+    device_class: enum
+    command_topic: setloglevel
+    options: 
+      - debug
+      - info
+      - warn
+      - error
+  enabledProtocols:
+    platform: sensor
+    enabled_by_default: true
+    entity_category: diagnostic
+    value_template: "{{ value_json.enabledProtocols }}"
+newrfx:
+  exists_choice:
+    platform: select
+    entity_category: config
+    name: A Select Rfx device
+    enabled_by_default: true
+    value_template: "{{ value_json.exists_choice }}"
+    device_class: enum
+    command_topic: set_exists_choice
+    options:
+      - Ac
+
+  discovery:
+    platform: switch
+    name: A) Mode découverte
+    enabled_by_default: true
+    entity_category: config
+    value_template: "{{ value_json.discovery }}"
+    payload_off: false
+    payload_on: true
+    state_off: false
+    state_on: true
+    command_topic: setdiscovery
+  subtypevalue:
+    platform: select
+    entity_category: config
+    name: B) Choisir un protocol
+    enabled_by_default: true
+    value_template: "{{ value_json.subtypeValue }}"
+    device_class: enum
+    command_topic: setsubtypevalue
+    options:
+      - Ac  
+  protocol:
+    platform: select
+    entity_category: config
+    name: C) Choisir un packet name
+    enabled_by_default: true
+    value_template: "{{ value_json.protocol }}"
+    device_class: enum
+    command_topic: setprotocol
+    options:
+      - val
+  id_rfxcom:  
+    platform: text
+    entity_category: config
+    name: F) RFX id ou code HouseUnit
+    enabled_by_default: true
+    value_template: "{{ value_json.id_rfxcom }}"
+    command_topic: setid_rfxcom
+  name:  
+    platform: text
+    entity_category: config
+    name: G) Nom
+    enabled_by_default: true
+    value_template: "{{ value_json.name }}"
+    command_topic: setname
+  friendly_name:  
+    platform: text
+    entity_category: config
+    name: H) friendly name
+    enabled_by_default: true
+    value_template: "{{ value_json.friendly_name }}"
+    command_topic: setfriendly_name
+  suggested_area:
+    platform: text
+    entity_category: config
+    name: I) Pièce
+    enabled_by_default: true
+    value_template: "{{ value_json.suggested_area }}"
+    device_class: null
+    command_topic: setsuggested_area
+  clicvalid:
+    platform: button
+    entity_category: config
+    name: L) Valider
+    enabled_by_default: true
+    value: false
+    payload_off: false
+    payload_on: true
+    state_off: false
+    state_on: true
+    command_topic: setclicvalid
+  clicdelete:
+    platform: button
+    entity_category: config
+    name: M) Delete
+    enabled_by_default: true
+    value_template: false
+    payload_off: false
+    payload_on: true
+    state_off: false
+    state_on: true
+    command_topic: setclicdelete
+  clicclear:
+    platform: button
+    entity_category: config
+    name: O) Clear
+    enabled_by_default: true
+    value: false
+    payload_off: false
+    payload_on: true
+    state_off: false
+    state_on: true
+    command_topic: setclicclear
+  message:
+    platform: sensor
+    entity_category: diagnostic
+    name: message
+    enabled_by_default: true
+    value_template: "{{ value_json.message }}" 
+newdioreceiver:
+  message:
+    platform: sensor
+    entity_category: diagnostic
+    name: message
+    enabled_by_default: true
+    value_template: "{{ value_json.message }}" 
+
+  exists_choice:
+    platform: select
+    entity_category: config
+    name: A) Select Dio device
+    enabled_by_default: true
+    value_template: "{{ value_json.exists_choice }}"
+    device_class: enum
+    command_topic: set_exists_choice
+    options:
+      - Ac
+  appaired_str:
+    platform: sensor
+    enabled_by_default: true
+    entity_category: diagnostic
+    value_template: "{{ value_json.appaired_str }}"
+    name: Appaired devices
+
+  unique_id:
+    platform: sensor
+    entity_category: diagnostic
+    name: Unique Id
+    enabled_by_default: true
+    value_template: "{{ value_json.unique_id }}"
+  name:  
+    platform: text
+    entity_category: config
+    name: B) Name
+    enabled_by_default: true
+    value_template: "{{ value_json.name }}"
+    command_topic: set_name
+  suggested_area:
+    platform: text
+    entity_category: config
+    name: C) Room
+    enabled_by_default: true
+    value_template: "{{ value_json.suggested_area }}"
+    device_class: null
+    command_topic: set_suggested_area
+  is_variator:  
+    platform: switch
+    entity_category: config
+    name: D) Is variator
+    enabled_by_default: true
+    value_template: "{{ value_json.is_variator }}"
+    payload_off: false
+    payload_on: true
+    state_off: false
+    state_on: true
+    command_topic: set_is_variator
+  is_cover:
+    platform: switch
+    entity_category: config
+    name: E) Is Cover
+    enabled_by_default: true
+    value_template: "{{ value_json.is_cover }}"
+    payload_off: false
+    payload_on: true
+    state_off: false
+    state_on: true
+    command_topic: set_is_cover
+  openduration:
+    platform: text
+    entity_category: config
+    name: F) Cover ascending duration
+    enabled_by_default: true
+    value_template: "{{ value_json.openduration }}"
+    device_class: null
+    command_topic: set_openduration
+  closeduration:
+    platform: text
+    entity_category: config
+    name: G) Cover descending duration
+    enabled_by_default: true
+    value_template: "{{ value_json.closeduration }}"
+    device_class: null
+    command_topic: set_closeduration
+
+
+  add_appaired:
+    platform: select
+    entity_category: config
+    name: H) Add appaired Rfx Device
+    enabled_by_default: true
+    value_template: "{{ value_json.add_appaired }}"
+    device_class: enum
+    command_topic: add_appaired
+    options:
+      - Ac  
+  sub_appaired:
+    platform: select
+    entity_category: config
+    name: I) Subtract appaired Rfx Device
+    enabled_by_default: true
+    value_template: ""
+    device_class: enum
+    command_topic: sub_appaired
+    options:
+      - Ac  
+  ref_appaired:  
+    platform: select
+    entity_category: config
+    name: J) Rfx Device 'reference'
+    enabled_by_default: true
+    value_template: "{{ value_json.ref_appaired }}"
+    device_class: enum
+    command_topic: set_refappaired
+    options:
+      - Ac  
+  
+  clicvalid:
+    platform: button
+    entity_category: config
+    name: K) OK
+    enabled_by_default: true
+    value_template: false
+    payload_off: false
+    payload_on: true
+    state_off: false
+    state_on: true
+    command_topic: set_clicvalid
+  clicdelete:
+    platform: button
+    entity_category: config
+    name: L) Delete
+    enabled_by_default: true
+    value_template: false
+    payload_off: false
+    payload_on: true
+    state_off: false
+    state_on: true
+    command_topic: set_clicdelete
+  clicclear:
+    platform: button
+    entity_category: config
+    name: M) Clear
+    enabled_by_default: true
+    value_template: false
+    payload_off: false
+    payload_on: true
+    state_off: false
+    state_on: true
+    command_topic: set_clicclear
+
+    
