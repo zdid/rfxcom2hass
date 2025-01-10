@@ -1,6 +1,6 @@
 # RFXCOM2HASS
 
-[![RFXCOM](rfxcom.png)](http://www.rfxcom.com)
+[![RFXCOM](rfxcom.png)](http://www.rfxcom.com) <img height="150px" width="150px" src="https://user-images.githubusercontent.com/7738048/40914297-49e6e560-6800-11e8-8904-36cce896e5a8.png">
 
 <img height="150px" width="150px" src="https://user-images.githubusercontent.com/7738048/40914297-49e6e560-6800-11e8-8904-36cce896e5a8.png">
 RFXCOM to MQTT bridge for home assistant
