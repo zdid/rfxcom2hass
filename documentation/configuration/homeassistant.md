@@ -21,5 +21,5 @@ homeassistant:
   # Note: should be different from [MQTT base topic](../mqtt.md) to prevent errors in HA software
   discovery_topic: 'homeassistant'
   # Optional: Home Assistant device prefix
-  discovery_device: 'rfxcom2mqtt'
+  discovery_device: 'rfxcom2hass'
 ```

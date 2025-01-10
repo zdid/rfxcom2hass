@@ -5,13 +5,13 @@ next: ../usage/
 
 # Configuration
 
-Rfxcom2MQTT is configured using [YAML](https://en.wikipedia.org/wiki/YAML) based `config.yaml` file.
+Rfxcom2Hass is configured using [YAML](https://en.wikipedia.org/wiki/YAML) based `config.yaml` file.
 The file have to be located in the `data` directory within your installation. The `data` directory and the `config.yaml` has to be writeable.
 
 ```yaml
 # Minimal configuration.yml example
 mqtt:
-  server: mqtt://localhost:1883
+  server: mqtt://homeassistant.local:1883
 rfxcom:
   # Could be either USB port (/dev/ttyUSB0)
   usbport: /dev/ttyUSB0
@@ -31,7 +31,7 @@ In case you want to for example override:
 
 ```yaml
 rfxcom:
-  usbport: zigbee2mqtt
+  usbport: rfxcom2hass
 ```
 
 set `RFXCOM_USB_DEVICE` to the desired value.

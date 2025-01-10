@@ -8,7 +8,7 @@ const conf = defineUserConfig({
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#title
    */
-  title: 'Rfxcom2Mqtt Documentation',
+  title: 'Rfxcom2Hass Documentation',
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#description
    */
@@ -18,7 +18,7 @@ const conf = defineUserConfig({
   temp: '.temp',
   cache: '.cache',
 
-  base: `/rfxcom2mqtt/`,
+  base: `/rfxcom2hass/`,
 
   /**
    * Extra tags to be injected to the page HTML `<head>`
@@ -37,7 +37,7 @@ const conf = defineUserConfig({
    * ref：https://v1.vuepress.vuejs.org/theme/default-theme-config.html
    */
    theme: hopeTheme({
-    repo: 'sguernion/rfxcom2mqtt',
+    repo: 'zdid/rfxcom2hass',
     repoLabel: 'GitHub',
     docsDir: 'src',
     lastUpdated: false,

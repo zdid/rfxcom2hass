@@ -1,0 +1,100 @@
+VD_000001:
+  protocol: DioReceiver
+  unique_id: VD_000001
+  device_id: VD_000001
+  name: Lumière escalier
+  device_name: []
+  id_rfxcom: ""
+  subtype: 0
+  subtypeValue: ""
+  repetitions: 1
+  sensors_types:
+    - switch
+  commands:
+    - switchOn
+    - switchOff
+    - setLevel
+  suggested_area: Salon
+  is_variator: false
+  is_cover: false
+  appaired:
+    - lighting2_AC_0x017334A2_10
+  ref_appaired: lighting2_AC_0x017334A2_10
+VD_000002:
+  protocol: DioReceiver
+  exists_choice: essai
+  unique_id: VD_000002
+  device_id: ""
+  name: essai
+  device_name: []
+  id_rfxcom: ""
+  subtype: 0
+  subtypeValue: ""
+  is_cover: true
+  repetitions: 1
+  sensors_types: &a1
+    - cover
+  commands:
+    - switchOn
+    - switchOff
+    - setLevel
+  suggested_area: room
+  is_variator: true
+  appaired:
+    - lighting2_AC_0x0156F0D6_11
+  ref_appaired: lighting2_AC_0x0156F0D6_11
+  appaired_str: "bouton bibliotheque (esc) "
+  message: ""
+  openduration: "12"
+  closeduration: 8.5
+VD_51769:
+  protocol: DioReceiver
+  exists_choice: NEW
+  unique_id: VD_51769
+  device_id: ""
+  name: toto
+  device_name:
+    - Ac device
+  id_rfxcom: ""
+  subtype: 0
+  subtypeValue: ""
+  is_cover: true
+  repetitions: 1
+  sensors_types: *a1
+  commands:
+    - switchOn
+    - switchOff
+    - setLevel
+  suggested_area: salon
+  is_variator: false
+  appaired:
+    - lighting2_AC_0x017334A2_10
+  openduration: 9
+  closeduration: 8.5
+  ref_appaired: lighting2_AC_0x017334A2_10
+VD_5465:
+  protocol: DioReceiver
+  exists_choice: NEW
+  unique_id: VD_5465
+  device_id: ""
+  name: Lumière bibliothèque
+  device_name:
+    - Ac device
+  id_rfxcom: ""
+  subtype: 0
+  subtypeValue: ""
+  is_cover: false
+  repetitions: 1
+  sensors_types:
+    - switch
+  commands:
+    - switchOn
+    - switchOff
+    - setLevel
+  suggested_area: Bibliothèque
+  is_variator: false
+  appaired:
+    - lighting2_AC_0x0156F0D6_11
+  appaired_str: "bouton bibliotheque (esc) "
+  ref_appaired: lighting2_AC_0x0156F0D6_11
+  message: ""

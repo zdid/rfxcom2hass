@@ -1,0 +1,101 @@
+lighting2_AC_0x017334A2_10:
+  protocol: lighting2
+  subtype: 0
+  subtypeValue: AC
+  unique_id: lighting2_AC_0x017334A2_10
+  id_rfxcom: 0x017334A2/10
+  device_id: 0x017334A2/10
+  unit_code: 10
+  name: bouton bas escalier
+  protocolOptions: []
+  repetitions: 2
+  sensors_types:
+    - level
+    - rssi
+    - switch
+    - switch
+    - switch
+  commands: &a2
+    switchOn: 0
+    switchOff: 0
+    setLevel: 1
+  suggested_area: boutons
+  device_name: &a1
+    - KlikAanKlikUit
+    - HomeEasy UK
+    - Chacon
+    - NEXA
+    - Intertechno
+  exists_choice: bouton bas escalier
+  discovery: false
+  message: ""
+lighting2_AC_0x0156F0D6_11:
+  protocol: lighting2
+  unique_id: lighting2_AC_0x0156F0D6_11
+  device_id: 0x0156F0D6/11
+  name: "bouton bibliotheque (esc) "
+  device_name: *a1
+  id_rfxcom: 0x0156F0D6/11
+  subtype: 0
+  subtypeValue: AC
+  repetitions: 2
+  sensors_types:
+    - level
+    - rssi
+    - switch
+  commands: *a2
+  suggested_area: boutons
+  exists_choice: "bouton bibliotheque (esc) "
+  discovery: false
+  message: ""
+lighting2_AC_0x0156F0D6_12:
+  protocol: lighting2
+  unique_id: lighting2_AC_0x0156F0D6_12
+  device_id: 0x0156F0D6/12
+  name: "bouton salle à manger(esc) "
+  device_name: *a1
+  id_rfxcom: 0x0156F0D6/12
+  subtype: 0
+  subtypeValue: AC
+  repetitions: 2
+  sensors_types:
+    - level
+    - rssi
+    - switch
+    - switch
+    - switch
+  commands: *a2
+  suggested_area: boutons
+  exists_choice: "bouton salle à manger(esc) "
+lighting2_AC_0x01570D5A_11:
+  protocol: lighting2
+  unique_id: lighting2_AC_0x01570D5A_11
+  device_id: 0x01570D5A/11
+  name: bouton lampadaire (esc)
+  device_name: *a1
+  id_rfxcom: 0x01570D5A/11
+  subtype: 0
+  subtypeValue: AC
+  repetitions: 2
+  sensors_types:
+    - level
+    - rssi
+    - switch
+  commands: *a2
+  suggested_area: boutons
+lighting2_AC_0x01570D5A_12:
+  protocol: lighting2
+  unique_id: lighting2_AC_0x01570D5A_12
+  device_id: 0x01570D5A/12
+  name: "bouton salon(esc) "
+  device_name: *a1
+  id_rfxcom: 0x01570D5A/12
+  subtype: 0
+  subtypeValue: AC
+  repetitions: 2
+  sensors_types:
+    - level
+    - rssi
+    - switch
+  commands: *a2
+  suggested_area: bouton

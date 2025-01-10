@@ -1,10 +1,10 @@
-# RFXCOM2MQTT
+# RFXCOM2HASS
 
 [![RFXCOM](rfxcom.png)](http://www.rfxcom.com)
 
-RFXCOM to MQTT bridge for RFXtrx433 devices
+RFXCOM to MQTT bridge for home assistant
 
-All received RFXCOM events are published to the MQTT rfxcom2mqtt/devices/\<id\> topic.
+All received RFXCOM events are published to the MQTT rfxcom2hass/devices/\<id\>/state topic.
 It is up to the MQTT receiver to filter these messages or to have a register/learning/pairing mechanism.
 
 ## [Getting started](./docs/README.md)
@@ -16,9 +16,26 @@ The [documentation](./docs/README.md) provides you all the information needed to
 
 ### [Home Assistant Integration](./docs/usage/integrations/home_assistant.md)
 
-The easiest way to integrate Rfxcom2MQTT with Home Assistant is by
+The easiest way to integrate Rfxcom2hass with Home Assistant is by
 using [MQTT discovery](https://www.home-assistant.io/integrations/mqtt#mqtt-discovery).
-This allows Rfxcom2MQTT to automatically add devices to Home Assistant.
+This allows Rfxcom2hass to semi-automatically add devices to Home Assistant.
+
+A dedicated panel on home assistant allows the setting of new rfx inputs. (New Rfx Device in MQTT appareils )
+Automatic Discovery is disable.
+<img align="left" height="100px" width="100px" src="newrfxdevice.png">
+Panel New Rfx Device
+(Create and modify existant Rfx Device)
+Enable  discovery on panel 
+Example: For a DIO element, click on discovery, press the dio button, it appears in the panel, disable discovery, complete the description and validate
+
+Panel New Dio Receiver
+(Create and modify existant Rfx Device)
+It also allows you to declare elaborate devices: such as lights or blinds.
+You will bring up these devices and not the buttons in HomeAssistant
+
+The system is open. You can create other elaborate device programs. You have to add them to the "virtualsdevices" directory, and complete the "index.ts" file of "virtualsdevices"
+
+
 
 ### Configuration
 
@@ -69,5 +86,5 @@ build multi Arch image
 docker buildx build \ 
 --platform linux/amd64,linux/arm/v7 \
 --push \
--t sguernion/rfxcom2mqtt .
+-t zdid/rfxcom2hass .
 ```

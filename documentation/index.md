@@ -2,10 +2,10 @@
 home: true
 title: Home
 icon: book
-heroImage: https://raw.githubusercontent.com/sguernion/rfxcom2mqtt/main/rfxcom.png
-heroText: Rfxcom2mqtt Documentation
+heroImage: https://raw.githubusercontent.com/zdid/rfxcom2hass/main/rfxcom.png
+heroText: Rfxcom2hass Documentation
 heroFullScreen: true
-tagline: Rfxcom to MQTT bridge
+tagline: Rfxcom to hass bridge
 actions:
   - text: Get Started →
     link: /getting-started/
@@ -17,6 +17,6 @@ actions:
 #    details: Feature 2 Description
 #  - title: Feature 3 Title
 #    details: Feature 3 Description
-footer: Rfxcom2mqtt Documentation
+footer: Rfxcom2hass Documentation
 ---
 

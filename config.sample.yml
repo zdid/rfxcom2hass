@@ -1,91 +1,36 @@
-
-loglevel: 'info'
-healthcheck:
-  enabled: true
-  cron: '*/5 * * * *'
-cacheState:
+loglevel: info
+healthcheckminutesfrequency: 5
+homeassistant:
+  discovery: false
+  base_topic: rfxcom2hass
+  discovery_bridge_unique_id: bridge_000001
+  topics:
+    discovery: homeassistant/device/%discovery_bridge_unique_id%/%device_unique_id%/config
+    command: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/%sensortype%"
+    state: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/state"
+    will: "%base_topic%/%discovery_bridge_unique_id%/status"
+    homeassistant_availability: homeassistant/status
+    ecoute: "%base_topic%/%discovery_bridge_unique_id%/#"
+mqtt:
+  base_topic: rfxcom2hass
+  include_device_information: false
+  qos: 0
+  retain: true
+  server: tcp://homeassistant.local
+  username: your_user
+  password: your_password
+  format_json: true
+rfxcom:
+  debug: false
+  enable_protocols:
+    - AC
+    - ARC
+    - LIGHTWAVERF
+    - OREGON
+    - X10
+  usbport: /dev/ttyUSB0
+  transmit:
+    repeat: 2
+cacheDevices:
   enable: true,
   saveInterval: 5
-
-homeassistant:
-  discovery: true
-  discovery_topic: homeassistant
-  discovery_device: rfxcom2mqtt
-
-mqtt:
-  base_topic: rfxcom2mqtt
-  server: tcp://<IP ADDRESS>
-  username: <USERNAME>
-  password: <PASSWORD>
-  qos: 0
-  retain: false
-
-rfxcom:
-  usbport: /dev/ttyUSB0
-  debug: false
-  transmit:
-    repeat: 4
-    lighting1:
-      - X10
-      - ARC
-      - ELRO
-      - PHILIPS_SBC
-    lighting2:
-      - AC
-      - HOMEEASY_EU
-    lighting3:
-      - KOPPLA
-    lighting4:
-      - PT2262
-  receive:
-    - temperaturehumidity1
-    - homeconfort
-    - lighting1
-    - lighting2
-    - lighting3
-    - lighting4
-    - remote
-    - security1
-
-  devices:
-    - id: '0x5C02'
-      friendlyName: 'Bathroom Temp & Hum'
-
-    - id: '0xB9459A'
-      friendlyName: 'Garden motion'
-
-    - id: '1001010/1'
-      name: 'CucuDimmer'
-      friendlyName: 'Kitchen Dimmer Light'
-      type: 'lighting2'
-
-    - id: '0x012E00FF'
-      friendlyName: 'Living Room switch'
-
-    - id: '0x00ED400F'
-      name: 'Lights'
-      units:
-        - unitCode: '1'
-          name: 'Light1'
-          friendlyName: 'Living Room'
-        - unitCode: '2'
-          name: 'Light2'
-          friendlyName: 'Kitchen'
-        - unitCode: '3'
-          name: 'Light3'
-          friendlyName: 'Garage'
-        - unitCode: '4'
-          name: 'Light4'
-          friendlyName: 'Garden'
-      type: 'lighting2'
-
-    - id: '0x3D090F'
-      name: 'Switch1'
-      command: 'on'
-      friendlyName: 'Living Room Lights on'
-      type: 'lighting4'
-    - id: '0x3D090E'
-      name: 'Switch1'
-      command: 'off'
-      friendlyName: 'Living Room Lights off'
-      type: 'lighting4'

@@ -1,38 +1,26 @@
 
 import * as mqtt from 'mqtt';
-import {Settings, SettingMqtt} from './Settings';
+import {Settings, SettingMqtt} from './settings';
 import { QoS, IClientOptions }  from 'mqtt';
 import { MqttEventListener,MQTTMessage }  from './models';
 import fs from 'fs';
-import logger from './logger';
+import {Logger} from './logger';
+import { AbstractDevice } from './abstractdevice';
+const logger = new Logger(__filename);
 
 
 interface MQTTOptions {qos?: QoS, retain?: boolean}
 
-class Topic{
-    base: string
-    will: string
-    devices: string
-    info: string
-
-    constructor(baseTopic: string) {
-        this.base = baseTopic;
-        this.devices = 'devices';
-        this.will = 'bridge/status';
-        this.info = 'bridge/info';
-    }
-}
-
 export default class Mqtt{
     private defaultOptions: any;
     private client?: mqtt.MqttClient;
+    private config : Settings; 
     private mqttSettings: SettingMqtt;
-    public topics: Topic;
     private listeners: MqttEventListener[] = [];
   
     constructor(config: Settings) {
+        this.config = config;
         this.mqttSettings = config.mqtt;
-        this.topics = new Topic(config.mqtt.base_topic);
     }
 
     addListener(listener: MqttEventListener){
@@ -40,7 +28,6 @@ export default class Mqtt{
     }
 
     async connect(): Promise<void> {
-     
       let port = '1883';
       if (this.mqttSettings.port) {
         port = this.mqttSettings.port;
@@ -53,13 +40,16 @@ export default class Mqtt{
 
       this.defaultOptions = {qos: qos, retain: this.mqttSettings.retain }
       logger.info(`Connecting to MQTT server at ${this.mqttSettings.server}`);
-      const will = {'topic': this.topics.base + '/'+ this.topics.will, 'payload': 'offline', 'qos': 1 as QoS,'retain': true};
+      const will = {'topic': AbstractDevice.getTopicCompleteName('will',''),
+           'payload': 'offline', 
+           'qos': 1 as QoS,
+           'retain': true};
       const options : IClientOptions = {'username':undefined, 'password':undefined, 'will': will};
       if (this.mqttSettings.username) {
         options.username = this.mqttSettings.username;
         options.password = this.mqttSettings.password;
       } else {
-        logger.debug(`Using MQTT anonymous login`);
+        logger.info(`Using MQTT anonymous login`);
       }
 
       if (this.mqttSettings.version) {
@@ -67,24 +57,24 @@ export default class Mqtt{
       }
 
       if (this.mqttSettings.keepalive) {
-        logger.debug(`Using MQTT keepalive: ${this.mqttSettings.keepalive}`);
+        logger.info(`Using MQTT keepalive: ${this.mqttSettings.keepalive}`);
           options.keepalive = this.mqttSettings.keepalive;
       }
 
       if (this.mqttSettings.ca) {
-        logger.debug(`MQTT SSL/TLS: Path to CA certificate = ${this.mqttSettings.ca}`);
+        logger.info(`MQTT SSL/TLS: Path to CA certificate = ${this.mqttSettings.ca}`);
           options.ca = fs.readFileSync(this.mqttSettings.ca);
       }
 
       if (this.mqttSettings.key && this.mqttSettings.cert) {
-        logger.debug(`MQTT SSL/TLS: Path to client key = ${this.mqttSettings.key}`);
-        logger.debug(`MQTT SSL/TLS: Path to client certificate = ${this.mqttSettings.cert}`);
+        logger.info(`MQTT SSL/TLS: Path to client key = ${this.mqttSettings.key}`);
+        logger.info(`MQTT SSL/TLS: Path to client certificate = ${this.mqttSettings.cert}`);
           options.key = fs.readFileSync(this.mqttSettings.key);
           options.cert = fs.readFileSync(this.mqttSettings.cert);
       }
   
       if (this.mqttSettings.client_id) {
-        logger.debug(`Using MQTT client ID: '${this.mqttSettings.client_id}'`);
+        logger.info(`Using MQTT client ID: '${this.mqttSettings.client_id}'`);
         options.clientId = this.mqttSettings.client_id;
       }
 
@@ -94,16 +84,19 @@ export default class Mqtt{
         // MQTT Connect
         this.onConnect(async () => {
           logger.info('Connected to MQTT');
-          this.listeners.forEach( listener => {
-            this.subscribe(listener.subscribeTopic());
-          });
-          this.publishState('online');
+          //this.subscribe(AbstractDevice.getTopicCompleteName('ecoute',this.config.homeassistant.discovery_bridge_unique_id))
+          //this.subscribe()
+           this.listeners.forEach( listener => {
+             this.subscribe(listener.subscribeTopic());
+           });
+          // this.publishState('online');
           this.onMessage();
           resolve();
         });
 
         this.client.on('error', (err: any) => {
           logger.error(err);
+          logger.error(JSON.stringify(will))
           reject(err);
         });
 
@@ -112,10 +105,12 @@ export default class Mqtt{
   
     private onMessage(): void {
       this.client?.on('message', (topic: string, message: any) => {
-        logger.debug(`Received MQTT message on '${topic}' with data '${message.toString()}'`);
+        if(topic.endsWith('/state')) return;        
         this.listeners.forEach( listener => {
           if(listener.subscribeTopic().find(e => topic.includes(e.replace('#','')))){
-            listener.onMQTTMessage({topic: topic,message: message.toString()} as MQTTMessage)
+            setImmediate(()=>
+              listener.onMQTTMessage({topic: topic,message: message.toString()} as MQTTMessage)
+            )
           }
         });
       });
@@ -131,11 +126,18 @@ export default class Mqtt{
       });
     }
   
-    publish(topic: string, playload: any, callback: any,options: MQTTOptions={},base=this.mqttSettings.base_topic): void {
+    publish(topic: string, payload: any, callback: any,options: MQTTOptions={}): void {
       const actualOptions: mqtt.IClientPublishOptions = {...this.defaultOptions, ...options};
-      topic = `${base}/${topic}`;
-      logger.debug("MQTT publish: topic "+topic +", payload '"+playload+"'");
-      this.client?.publish(topic, playload, actualOptions, (error: any) => {
+      let temp = payload;
+      if(typeof payload === 'object') {
+        const marge = this.mqttSettings.format_json?2:0;
+        if (marge) {
+          temp = JSON.stringify(payload, undefined, marge)
+        } else {
+          temp = JSON.stringify(payload);
+        }
+      }
+      this.client?.publish(topic, temp, actualOptions, (error: any) => {
         if (error) {
           logger.error(error);
         }
@@ -144,7 +146,7 @@ export default class Mqtt{
     }
 
     publishState(state :string) {
-      this.publish(this.topics.will, state,(error: any) => {}, {retain: true, qos: 0});
+      this.publish(AbstractDevice.getTopicCompleteName('will',''), state,(error: any) => {}, {retain: true, qos: 0});
     }
   
     isConnected(): boolean {

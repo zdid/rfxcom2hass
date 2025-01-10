@@ -11,37 +11,39 @@ export class EntityState{
 //cmnd:             cmnd,
 
 export class RfxcomInfo {
+    unique_id: any;
     receiverTypeCode: number = 0;
     receiverType:     string = '';
     hardwareVersion:  string = '';
     firmwareVersion:  number = 0;
     firmwareType:     string = '';
     enabledProtocols: string[] = [];
+    version? : string;
+    logLevel?: string;
+    protocols?: string[];
+    // allProtocols?: string[];
+    commands: string[] = ["setLogLevel","setProtocols"];
+    discovery: boolean = false;
 }
   
-export class BridgeInfo {
-    coordinator: RfxcomInfo = new RfxcomInfo();
-    version: string = '';
-    logLevel: string = '';
-}
-
 
 export class DeviceEntity {
   public manufacturer: string = "Rfxcom";
-  public via_device: string = 'rfxcom2mqtt_bridge';
+  public via_device: string = 'rfxcom2hass_bridge';
 
   constructor(
     public identifiers: string[] = [],
-    //public model: string = '',
+    public model: string = '',
     public name:  string = '',
+    public suggested_area = ''
   ) {}
   
 }
 
 export class DeviceBridge {
   public model: string = 'Bridge';
-  public name:  string = 'Rfxcom2Mqtt Bridge';
-  public manufacturer: string = 'Rfxcom2Mqtt';
+  public name:  string = 'Rfxcom2Hass Bridge';
+  public manufacturer: string = 'Rfxcom2Hass';
 
   constructor(
     public identifiers: string[] = [],
@@ -57,5 +59,6 @@ export interface MqttEventListener{
 }
 export interface MQTTMessage{
     topic: string,
-    message: any
+    message: any,
+    command?: string
 }

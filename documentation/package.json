@@ -1,6 +1,6 @@
 {
-    "name": "rfxcom2mqtt",
-    "version": "0.2.0",
+    "name": "rfxcom2hass",
+    "version": "0.1.0",
     "scripts": {
         "build:vite": "vuepress-vite build ./",
         "build:vite-debug": "cross-env DEBUG=vuepress* vuepress-vite build ./",
@@ -34,7 +34,7 @@
         "vuepress-plugin-pwa2": "2.0.0-rc.14",
         "vuepress-theme-hope": "2.0.0-rc.14"
     },
-    "description": "rfxcom2mqtt documentation",
+    "description": "rfxcom2hass documentation",
     "author": "",
     "license": "ISC",
     "dependencies": {

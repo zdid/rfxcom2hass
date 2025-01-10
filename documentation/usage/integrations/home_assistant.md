@@ -6,12 +6,12 @@ headerDepth: 3
 
 
 ## MQTT discovery
-The easiest way to integrate Rfxcom2MQTT with Home Assistant is by
+The easiest way to integrate Rfxcom2Hass with Home Assistant is by
 using [MQTT discovery](https://www.home-assistant.io/integrations/mqtt#mqtt-discovery).
-This allows Rfxcom2MQTT to automatically add devices to Home Assistant.
+This allows Rfxcom2Hass to automatically add devices to Home Assistant.
 
 To achieve the best possible integration (including MQTT discovery):
-- In your **Rfxcom2MQTT** `config.yaml` set 
+- In your **Rfxcom2Hass** `config.yaml` set 
 
 ```
 homeassistant:
@@ -22,7 +22,7 @@ homeassistant:
 
 
 ## Home Assistant device registry
-When using Home Assistant MQTT discovery, Rfxcom2MQTT integrates
+When using Home Assistant MQTT discovery, Rfxcom2Hass integrates
 with the [Home Assistant device registry](https://developers.home-assistant.io/docs/en/device_registry_index.html).
 This allows you to change the Home Assistant `entity_id` and `friendly_name` from the Home Assistant web interface
 without having to restart Home Assistant. It also makes it possible to show which entities belong to which device.

@@ -1,0 +1,458 @@
+{
+    "0x017334A2_10": {
+        "seqnbr": 2,
+        "subtype": 0,
+        "id": "0x017334A2",
+        "unitCode": 10,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 7,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00025_1": {
+        "seqnbr": 50,
+        "subtype": 0,
+        "id": "0x02A00025",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00029_1": {
+        "seqnbr": 5,
+        "subtype": 0,
+        "id": "0x02A00029",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00027_1": {
+        "seqnbr": 8,
+        "subtype": 0,
+        "id": "0x02A00027",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00026_1": {
+        "seqnbr": 10,
+        "subtype": 0,
+        "id": "0x02A00026",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A0002B_1": {
+        "seqnbr": 12,
+        "subtype": 0,
+        "id": "0x02A0002B",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00002_1": {
+        "seqnbr": 30,
+        "subtype": 0,
+        "id": "0x02A00002",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00043_1": {
+        "seqnbr": 28,
+        "subtype": 0,
+        "id": "0x02A00043",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00003_1": {
+        "seqnbr": 17,
+        "subtype": 0,
+        "id": "0x02A00003",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A0003A_1": {
+        "seqnbr": 19,
+        "subtype": 0,
+        "id": "0x02A0003A",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A0002E_1": {
+        "seqnbr": 22,
+        "subtype": 0,
+        "id": "0x02A0002E",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00051_1": {
+        "seqnbr": 23,
+        "subtype": 0,
+        "id": "0x02A00051",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00030_1": {
+        "seqnbr": 25,
+        "subtype": 0,
+        "id": "0x02A00030",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00009_1": {
+        "seqnbr": 27,
+        "subtype": 0,
+        "id": "0x02A00009",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 5,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00041_1": {
+        "seqnbr": 31,
+        "subtype": 0,
+        "id": "0x02A00041",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00018_1": {
+        "seqnbr": 34,
+        "subtype": 0,
+        "id": "0x02A00018",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00040_1": {
+        "seqnbr": 53,
+        "subtype": 0,
+        "id": "0x02A00040",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00016_1": {
+        "seqnbr": 38,
+        "subtype": 0,
+        "id": "0x02A00016",
+        "unitCode": 1,
+        "commandNumber": 1,
+        "command": "On",
+        "level": 15,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00013_1": {
+        "seqnbr": 40,
+        "subtype": 0,
+        "id": "0x02A00013",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A0003D_1": {
+        "seqnbr": 41,
+        "subtype": 0,
+        "id": "0x02A0003D",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A0001A_1": {
+        "seqnbr": 49,
+        "subtype": 0,
+        "id": "0x02A0001A",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A0000D_1": {
+        "seqnbr": 47,
+        "subtype": 0,
+        "id": "0x02A0000D",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x0196E326_10": {
+        "seqnbr": 51,
+        "subtype": 0,
+        "id": "0x0196E326",
+        "unitCode": 10,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 7,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    },
+    "0x02A00042_1": {
+        "seqnbr": 52,
+        "subtype": 0,
+        "id": "0x02A00042",
+        "unitCode": 1,
+        "commandNumber": 0,
+        "command": "Off",
+        "level": 0,
+        "rssi": 6,
+        "type": "lighting2",
+        "deviceName": [
+            "KlikAanKlikUit",
+            "HomeEasy UK",
+            "Chacon",
+            "NEXA",
+            "Intertechno"
+        ],
+        "subTypeValue": "AC"
+    }
+}

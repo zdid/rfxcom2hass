@@ -1,0 +1,26 @@
+{
+    // Utilisez IntelliSense pour en savoir plus sur les attributs possibles.
+    // Pointez pour afficher la description des attributs existants.
+    // Pour plus d'informations, visitez : https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "TS-1Node",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/ts-node",
+            "runtimeArgs": [
+                "--transpile-only",
+                // if you use esm
+                //"--esm" 
+            ],
+            "program": "${workspaceFolder}/src/dev.ts",
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "cwd": "${workspaceRoot}",
+            "skipFiles": ["<node_internals>/**", "node_modules/**"],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        }
+    ]
+}

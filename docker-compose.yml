@@ -1,9 +1,9 @@
-version: "3.8"
+version: "1.1"
 
 services: 
-  rfxcom2mqtt:
-    image: sguernion/rfxcom2mqtt
-    container_name: rfxcom2mqtt
+  rfxcom2hass:
+    image: zdid/rfxcom2hass
+    container_name: rfxcom2hass
     build: ./
     volumes:
       - ./config:/app/data
