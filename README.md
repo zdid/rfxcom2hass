@@ -1,6 +1,6 @@
 # RFXCOM2HASS
 
-[![RFXCOM](rfxcom.png)](http://www.rfxcom.com) 
+[![RFXCOM](rfxcom.png)](<img height="50px" src="https://github.com/rfxcom/node-rfxcom">) 
 [![Homeassistant](https://user-images.githubusercontent.com/7738048/40914297-49e6e560-6800-11e8-8904-36cce896e5a8.png)](https://www.home-assistant.io/)
 
 
