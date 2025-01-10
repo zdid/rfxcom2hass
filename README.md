@@ -1,6 +1,6 @@
 # RFXCOM2HASS
 
-[![RFXCOM](rfxcom.png)](http://www.rfxcom.com) <img height="150px" width="150px" src="https://user-images.githubusercontent.com/7738048/40914297-49e6e560-6800-11e8-8904-36cce896e5a8.png">
+[![RFXCOM](rfxcom.png)](http://www.rfxcom.com) <img align="right" height="150px" width="150px" src="https://user-images.githubusercontent.com/7738048/40914297-49e6e560-6800-11e8-8904-36cce896e5a8.png">
 
 
 RFXCOM to MQTT bridge for home assistant
@@ -23,7 +23,7 @@ This allows Rfxcom2hass to semi-automatically add devices to Home Assistant.
 
 A dedicated panel on home assistant allows the setting of new rfx inputs. (New Rfx Device in MQTT appareils )
 Automatic Discovery is disable by default.
-<img align="left"  src="newrfxdevice.png">
+<img align="left"  src="rfxcombridge.png"> <img align="center"  src="newrfxdevice.png"> <img align="right"  src="newdiodevice.png">
 Panel New Rfx Device
 (Create and modify existant Rfx Device)
 Enable  discovery on panel 
