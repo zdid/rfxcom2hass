@@ -3,14 +3,12 @@
 [![RFXCOM](rfxcom.png)](http://www.rfxcom.com) 
 [![Homeassistant](https://user-images.githubusercontent.com/7738048/40914297-49e6e560-6800-11e8-8904-36cce896e5a8.png)](https://www.home-assistant.io/)
 
-[https://user-images.githubusercontent.com/7738048/40914297-49e6e560-6800-11e8-8904-36cce896e5a8.png]
-
-
 
 <img align="right" height="150px" width="150px" src="https://user-images.githubusercontent.com/7738048/40914297-49e6e560-6800-11e8-8904-36cce896e5a8.png">
 
 
 RFXCOM to MQTT bridge for home assistant
+
 
 All received RFXCOM events are published to the MQTT rfxcom2hass/devices/\<id\>/state topic.
 It is up to the MQTT receiver to filter these messages or to have a register/learning/pairing mechanism.
