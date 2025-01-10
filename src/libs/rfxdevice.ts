@@ -10,8 +10,6 @@ import { Logger } from './logger';
 
 const logger = new Logger(__filename)
 
-
-
 interface Complement {
   icon?: string,
   entity_category?: string,

@@ -25,7 +25,6 @@ export class RfxcomInfo {
     commands: string[] = ["setLogLevel","setProtocols"];
     discovery: boolean = false;
 }
-  
 
 export class DeviceEntity {
   public manufacturer: string = "Rfxcom";

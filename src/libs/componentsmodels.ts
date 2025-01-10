@@ -8,5 +8,4 @@ export class Components {
     static get(typeDevice: string, componentName: string) {
          return Components.components[typeDevice][componentName];
     }
-
 }

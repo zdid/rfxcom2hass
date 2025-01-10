@@ -6,5 +6,4 @@ process.env['RFXCOM2HASS_DATA_VIRTUALDEVICES'] = __dirname+'/../data/virtualdevi
 process.env['RFXCOM2HASS_LOG_LEVEL'] = 'debug';
 // process.env['RFXCOM2HASS_LOG_FILE'] = __dirname+'/var/log/rfxcom2hass-zdid.log';
 
-
 require('./index.ts');

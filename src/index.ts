@@ -2,7 +2,6 @@
 
 import Controller from './libs/controller';
 
-
 let controller: Controller;
 let stopping = false;
 

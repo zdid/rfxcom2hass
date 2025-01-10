@@ -13,8 +13,6 @@ import { getListOfNewsParameters, getNewVirtualDeviceFrom } from './virtualdevic
 
 const logger = new Logger(__filename);
 
-//interface IDevices {[s: string]: RfxDevice};
-
 /**
  * Devices contains the devices detected with a flag for send to mqtt
  */

@@ -12,7 +12,6 @@ import { evenement } from './controller';
 import { throws } from 'assert';
 const logger = new Logger(__filename);
 
-
 /**
  * 
  */

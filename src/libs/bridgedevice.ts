@@ -9,8 +9,7 @@ import utils from './utils';
 import { AbstractDevice } from './abstractdevice';
 import { Logger } from './logger';
 import { evenement, ToEmit } from './controller';
-//import { json } from 'body-parser';
-//import { log } from 'console';
+
 const logger = new Logger(__filename);
 
 export class BridgeDevice extends AbstractDevice{

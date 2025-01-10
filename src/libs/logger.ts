@@ -9,7 +9,6 @@ const winstonToLevel = (level: WinstonLogLevel): LogLevel => level === 'warning'
 
 
 export class Logger {
-
     private logger: winston.Logger;
     private name: string;
     private transportsToUse: winston.transport[];

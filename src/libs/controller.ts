@@ -18,7 +18,6 @@
  * the elements in the file 'src/virtuals/settingsvirtual.ts'
  * 
  */
-
 import {Settings, SettingDevice, read} from './settings';
 import Mqtt from './Mqtt';
 import Rfxcom, {IRfxcom} from './rfxcombridge';

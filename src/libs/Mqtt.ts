@@ -8,7 +8,6 @@ import {Logger} from './logger';
 import { AbstractDevice } from './abstractdevice';
 const logger = new Logger(__filename);
 
-
 interface MQTTOptions {qos?: QoS, retain?: boolean}
 
 export default class Mqtt{

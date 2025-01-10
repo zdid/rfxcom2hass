@@ -9,7 +9,6 @@ import Devices from "./devices";
 
 const logger = new Logger(__filename,"debug")
 
-
 interface SettingNew extends SettingDevice {
       exists_choice: string;
       discovery?: boolean;

@@ -8,7 +8,6 @@ import { info } from 'console';
 
 const logger = new Logger(__filename,"debug")
 
-
 export interface IRfxcom{
   getDeviceNames(protocol: string, subtype: number | undefined): string[];
   enableRFXProtocols(): void;

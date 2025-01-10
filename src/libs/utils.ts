@@ -5,8 +5,6 @@ import { Logger } from './logger';
 
 const logger = new Logger(__filename)
 
-
-
 export function getRfxcom2hassVersion(): string {
   const packageJSON = require('../..' + '/package.json');
   return packageJSON.version;

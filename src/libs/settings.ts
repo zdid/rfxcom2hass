@@ -3,6 +3,7 @@ import * as fs from 'fs'
 import * as YAML from 'yaml'
 import { RfxDevice } from './rfxdevice';
 import Rfxcom from './rfxcombridge';
+
 const objectAssignDeep = require('object-assign-deep');
 
 type RecursivePartial<T> = {[P in keyof T]?: RecursivePartial<T[P]>;};
