@@ -1,10 +1,13 @@
-# RFXCOM2HASS
+# RFXCOM2HASS UNDER CONSTRUCTION
+# RFXCOM2HASS UNDER CONSTRUCTION
+# RFXCOM2HASS UNDER CONSTRUCTION
+# RFXCOM2HASS UNDER CONSTRUCTION
+# RFXCOM2HASS UNDER CONSTRUCTION
+# RFXCOM2HASS UNDER CONSTRUCTION
 
 [![RFXCOM](rfxcom.png)](<img height="25%" src="https://github.com/rfxcom/node-rfxcom">) 
-[![Homeassistant](https://user-images.githubusercontent.com/7738048/40914297-49e6e560-6800-11e8-8904-36cce896e5a8.png)](https://www.home-assistant.io/)
+[![Homeassistant](homeassistant.png)](https://www.home-assistant.io/)
 
-
-<img align="right" height="150px" width="150px" src="https://user-images.githubusercontent.com/7738048/40914297-49e6e560-6800-11e8-8904-36cce896e5a8.png">
 
 
 RFXCOM to MQTT bridge for home assistant
@@ -18,7 +21,6 @@ The [documentation](./docs/index.md) provides you all the information needed to 
 
 ## Usage
 
-<img align="left" height="100px" width="100px" src="https://user-images.githubusercontent.com/7738048/40914297-49e6e560-6800-11e8-8904-36cce896e5a8.png">
 
 ### [Home Assistant Integration](./docs/usage/integrations/home_assistant.md)
 
