@@ -25,12 +25,14 @@ rfxcom:
   enable_protocols:
     - AC
     - ARC
+    - LACROSSE
     - LIGHTWAVERF
     - OREGON
     - X10
   usbport: /dev/ttyUSB0
   transmit:
     repeat: 2
+mock: false
 cacheDevices:
   enable: true,
   saveInterval: 1
