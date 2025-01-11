@@ -28,7 +28,7 @@ This allows Rfxcom2hass to semi-automatically add devices to Home Assistant.
 
 A dedicated panel on home assistant allows the setting of new rfx inputs. (New Rfx Device in MQTT appareils )
 Automatic Discovery is disable by default.
-<img align="left"  src="rfxcombridge.png"> <img align="center"  src="newrfxdevice.png"> <img align="right"  src="newdiodevice.png">
+<img align="left"  src="rfxcombridge1.png"> <img align="center"  src="newrfxdevice.png"> <img align="right"  src="newdiodevice.png">
 Panel New Rfx Device
 (Create and modify existant Rfx Device)
 Enable  discovery on panel 
