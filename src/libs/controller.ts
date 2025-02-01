@@ -1,5 +1,6 @@
 /**
- * Main Module Drives the start It is associated with the general settings of the config file.
+ * Main Module Drives the start 
+ * It is associated with the general settings of the config file.
  * 
  * Loading the main modules: MQTT, RfxcomBridge (RFXCOM), All RFX devices, All virtual devices
  * 
@@ -160,7 +161,7 @@ export default class Controller implements MqttEventListener{
     private getIntervalFunction(): any {
         let rfxBridge = this.rfxBridge;
         let mqttClient = this.mqttClient;
-        let stop = this.stop
+        let stop = this.stop;
         let intervalFunction = function ()  {
             rfxBridge.getStatus((status: string) => {
                 mqttClient.publishState(status);
@@ -172,7 +173,7 @@ export default class Controller implements MqttEventListener{
         return intervalFunction;
     }
 
-    scheduleHealthcheck(){
+    private scheduleHealthcheck(){
         let func: any = this.getIntervalFunction();
         setTimeout(func,2000);
         let delay = this.config.healthcheckminutesfrequency
@@ -208,7 +209,7 @@ export default class Controller implements MqttEventListener{
         logger.debug(`controller on mqtt ${JSON.stringify(data)}`)
         evenement.emit('MQTT:'+elementaryTopic, data)
     }
-    sendToMQTT(evt: any) {
+    private sendToMQTT(evt: any) {
         logger.info("receive from rfxcom : "+JSON.stringify(evt));
         // inform virtual device from appaired device or equivalent
         evenement.emit('RFX:'+evt.unique_id, evt);

@@ -24,7 +24,7 @@ export interface IRfxcom{
   onDisconnect(callback: any): void;
   subscribeProtocolsEvent(callback: any): void;
   stop(): void;
-  sendCommand(deviceType: string ,subtypeValue: string ,command: string | undefined ,entityName: string): void;
+  //sendCommand(deviceType: string ,subtypeValue: string ,command: string | undefined ,entityName: string, options?: string): void;
 }
 
 interface ListBySubtypeValue {
@@ -57,9 +57,14 @@ export default class Rfxcom implements IRfxcom{
       this.allProtocols = [];
       this.listBySubtypeValue = {'NONE': { packetNames : [], subtype: '-1'}};
     }
-    getDeviceNames(packetType: any, subtype: number ): string[] {
-      packetType= String(rfxcom.packetNames[packetType])
-      return rfxcom.deviceNames[packetType][subtype];
+    getDeviceNames(spacketType: any, subtype: number ): string[] {
+      let retValue = []
+      let packetType= String(rfxcom.packetNames[spacketType])
+      logger.info(`packettype ${spacketType} ${packetType}, subtype ${subtype}, ${rfxcom.deviceNames[spacketType]}`)
+      if(packetType && rfxcom.deviceNames[packetType] && rfxcom.deviceNames[packetType][subtype]) {
+        retValue = rfxcom.deviceNames[packetType][subtype];
+      }
+      return retValue;
     }
     static getFunctionsForProtocol(protocol: string) : any{
       if(Rfxcom.functionsByProtocol) {
@@ -256,17 +261,18 @@ export default class Rfxcom implements IRfxcom{
         return;
       }
       // We may also get a value from the payload to use in the device function
-      let deviceOptions = data.protocolOptions;
-
-
-      // Instantiate the device class
-      let device;
-      if (data.protocolOptions) {
-        device = new rfxcom[data.protocol].transmitter(this.rfxtrx, data.subtype, data.protocolOptions);
-      } else {
-        device = new  rfxcom[data.protocol].transmitter(this.rfxtrx, data.subtype);
+      let o_options : any;
+      if((''+data.options).trim()) {
+        try {
+          o_options = JSON.parse(''+data.options )
+        } catch (error) {
+          o_options = undefined;
+        } 
       }
 
+      // Instantiate the device class
+      let device = new rfxcom[data.protocol].transmitter(this.rfxtrx, data.subtype, o_options);
+   
       let nbParmsForFunction = Rfxcom.getFunctionsForProtocol(data.protocol);
 
       const repeat: number = (transmitRepetitions) ? transmitRepetitions : 2;
@@ -326,6 +332,17 @@ export default class Rfxcom implements IRfxcom{
                       (evt.unitCode?'_'+evt.unitCode:''):
                     (evt.data?'_'+evt.data:''))
                   );
+            /**
+             * mise a plat des tableaux pour les modeles  (current temperature)
+             */
+            for(let name in evt) {
+              if (Array.isArray(evt[name]) ){
+                for(let i = 0; i < evt[name].length; i++) {
+                  evt[name+'_'+(i+1)] = evt[name][i]        
+                }
+                delete evt[name];
+              }
+            }
             callback(evt);
           });
         });
@@ -334,14 +351,6 @@ export default class Rfxcom implements IRfxcom{
     stop(){
       logger.info('Disconnecting from RFXCOM');
       this.rfxtrx.close();
-    }
-
-    sendCommand(deviceType: string ,subtypeValue: string ,command: string | undefined  ,entityName: string){
-      if( command !== undefined){
-        let subType = this.listBySubtypeValue[subtypeValue]?.subtype;
-        let device = new rfxcom[this.capitalize(deviceType)](this.rfxtrx, subType);
-        device[command](entityName);
-      }
     }
 
     private capitalize(str: string): string {

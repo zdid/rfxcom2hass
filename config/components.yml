@@ -1,8 +1,116 @@
 device:
-  _default:
+  __default:
     platform: sensor
     enabled_by_default: true
-    value_template: "{{ value_json.command }}"
+  energy:
+    name: Power instantanéous
+    device_class: POWER
+    state_class: MEASUREMENT
+    unit_of_measurement: WATT
+  totalEnergy:
+    name: Total energy usage
+    device_class: ENERGY,
+    state_class: TOTAL_INCREASING
+    unit_of_measurement: W/H
+  noiseLevel:
+    name: Noise Level
+    enabled_by_default: true
+  barometer:
+    name: Barometer
+    device_class: PRESSURE
+    state_class: MEASUREMENT
+    unit_of_measurement: HPA,
+  voltage:
+    platform: sensor
+    device_class: voltage
+    state_class: measurement
+    name: Voltage
+    unit_of_measurement: Volt
+  current:
+    platform: sensor
+    device_class: current
+    state_class: measurement
+    name: Current
+    unit_of_measurement: A
+  current_1:
+    platform: sensor
+    device_class: current (1)
+    state_class: measurement
+    name: Current (1)
+    unit_of_measurement: A
+  current_2:
+    platform: sensor
+    device_class: current (2)
+    state_class: measurement
+    name: Current
+    unit_of_measurement: A
+  current_3:
+    platform: sensor
+    device_class: current (3)
+    state_class: measurement
+    name: Current
+    unit_of_measurement: A
+  direction:
+    name: Wind direction
+    state_class: measurement,
+    unit_of_measurement: '°'
+  rainfallRate:
+    name: Rain rate
+    state_class: MEASUREMENT,
+    unit_of_measurement: mm/H
+    device_class: PRECIPITATION_INTENSITY
+  status:
+    platform: sensor
+    name: Status
+  deviceStatus:
+    platform: sensor
+    name: Status
+  statusNumber:
+    platform: sensor
+    name: Status
+ 
+  count:
+    platform: sensor
+    name: Count
+    state_class: TOTAL_INCREASING
+  counter:
+    platform: sensor
+    name: Count
+    state_class: TOTAL_INCREASING
+  chillFactor:
+    platform: sensor
+    device_class: temperature
+    state_class: measurement
+    icon: mdi:thermometer
+    name: Chill Factor
+    unit_of_measurement: °C
+  gustSpeed:
+    platform: sensor
+    device_class: WIND_SPEED
+    state_class: measurement
+    name: Gust Speed
+    unit_of_measurement: 'M/s' 
+  averageSpeed:
+    platform: sensor
+    device_class: WIND_SPEED
+    state_class: measurement
+    name: Average Speed
+    unit_of_measurement: 'M/s' 
+  rainfall:
+    platform: sensor
+    device_class: PRECIPITATION
+    state_class: measurement
+    name: RainFall
+    unit_of_measurement: "Mms"
+  forecast:
+    platform: sensor
+    name: forcast
+  uv:
+    platform: sensor
+    device_class: UV
+    state_class: measurement
+    name: UV
+    unit_of_measurement: Ind.UV
   switch:
     platform: switch
     enabled_by_default: true
@@ -11,14 +119,10 @@ device:
     state_off: Off
     state_on: On
     value_template: "{{ value_json.command }}"
-    device_class: null
-    state_class: null
-    unit_of_measurement: null
-    command_topic: set 
+    command_topic: switch 
   level: 
     platform: sensor
     enabled_by_default: true
-    value_template: "{{ value_json.level }}"
     device_class: null
     state_class: measurement
     unit_of_measurement: null
@@ -31,16 +135,14 @@ device:
     entity_category: diagnostic
     icon: mdi:signal
     name: Rssi
-    value_template: "{{ value_json.rssi }}"
     unit_of_measurement: dBm
-  date:
+  timestamp:
     platform: sensor
     device_class: timestamp
     state_class: measurement
     entity_category: diagnostic
     icon: mdi:date
     name: date
-    value_template: "{{ value_json.date }}"
     unit_of_measurement: ""
   temperature:
     platform: sensor
@@ -48,7 +150,20 @@ device:
     state_class: measurement
     icon: mdi:thermometer
     name: Temperature
-    value_template: "{{ value_json.temperature }}"
+    unit_of_measurement: °C
+  temperature_1:
+    platform: sensor
+    device_class: temperature
+    state_class: measurement
+    icon: mdi:thermometer
+    name: Temperature
+    unit_of_measurement: °C
+  temperature_2:
+    platform: sensor
+    device_class: temperature
+    state_class: measurement
+    icon: mdi:thermometer
+    name: Temperature
     unit_of_measurement: °C
   humidity:
     platform: sensor
@@ -56,33 +171,30 @@ device:
     state_class: measurement
     icon: mdi:humidity
     name: Humidity
-    value_template: "{{ value_json.humidity }}"
     unit_of_measurement: "%RH"
-  battery:
+  humidityStatus:
+    platform: sensor
+    device_class: humidity_status
+    state_class: measurement
+    icon: mdi:humidity
+    name: Humidity Status
+    unit_of_measurement: "%RH"
+  batteryVoltage:
     platform: sensor
     device_class: battery
     entity_category: diagnostic
     state_class: measurement
     icon: mdi:battery
     name: Battery
-    value_template: "{{ value_json.battery }}"
-    unit_of_measurement: "%RH"
-  batterylevel:
+    unit_of_measurement: "V"
+  batteryLevel:
     platform: sensor
     device_class: battery
     entity_category: diagnostic
     state_class: measurement
     icon: mdi:battery
     name: Battery
-    value_template: "{{ value_json.batterylevel }}"
-    unit_of_measurement: ""
-  current:
-    platform: sensor
-    device_class: current
-    state_class: measurement
-    name: Current
-    value_template: "{{ value_json.current }}"
-    unit_of_measurement: A
+    unit_of_measurement: "%"
   cover:
     platform: cover
     device_class: cover
@@ -106,6 +218,13 @@ device:
     command_topic: set
     set_command_template: {{ command }}
     set_position_template: "{{ position }}"
+
+
+
+
+
+
+
 
 bridge:
   receiverType:
@@ -254,6 +373,14 @@ newrfx:
     value_template: "{{ value_json.suggested_area }}"
     device_class: null
     command_topic: setsuggested_area
+  options:
+    platform: text
+    entity_category: config
+    name: J) options (json string)
+    enabled_by_default: true
+    value_template: "{{ value_json.options }}"
+    device_class: null
+    command_topic: setoptions
   clicvalid:
     platform: button
     entity_category: config

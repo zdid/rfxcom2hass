@@ -85,10 +85,10 @@ export interface SettingMinDevice  {
     subtype?: number,
     subtypeValue?: string,
     repetitions?: number,
-    protocolOptions?: string[],
     sensors_types: string[],
     commands?: any,
-    suggested_area?: string
+    suggested_area?: string,
+    options?:string
 }
 export interface SettingDevice   extends SettingMinDevice {
       //house_code?: string,
@@ -191,11 +191,11 @@ export function getSettingDeviceFromEvent( state: any) {
         device_id: device_id,
         device_name: state.device_name,
         friendlyName: '',
-        protocolOptions: [],
         repetitions: state.repetitions ?? 2,
         sensors_types : [],
         commands : Rfxcom.getFunctionsForProtocol(state.protocol),
         suggested_area: '',
+        options:''
     };
     let property: any ;
     for( property in state) {

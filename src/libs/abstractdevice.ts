@@ -7,7 +7,7 @@ import Mqtt from './Mqtt';
 import { DeviceEntity, MQTTMessage,MqttEventListener } from './models';
 import utils, { onEvenement  } from './utils';
 import {Logger} from './logger';
-import { Components } from './componentsmodels';
+import { Components } from './components';
 import { evenement } from './controller';
 import { throws } from 'assert';
 const logger = new Logger(__filename);
@@ -107,10 +107,7 @@ export class AbstractDevice   { //implements MqttEventListener{
 
  
   protected publishDiscoveryAll(typeDevice:string, datanames: string [], unique_id: string, deviceName : string , protocol: string,suggested_area?: string) {
-    logger.info(`publishDiscoveryall ${typeDevice}`) ;
     this.fordelete_unique_id = unique_id; 
-
- 
     let topics = {
       state : AbstractDevice.getTopicCompleteName('state',unique_id),
       will: AbstractDevice.getTopicCompleteName('will',unique_id),
@@ -141,16 +138,19 @@ export class AbstractDevice   { //implements MqttEventListener{
      this.json2delete = JSON.parse(JSON.stringify(json));
      let components: {[key:string]:string} = {}
      for(const componentName of datanames) {
-      let component = JSON.parse(JSON.stringify(Components.get(typeDevice,componentName)))
+      let component = Components.get(typeDevice,componentName)
+      if(component === undefined ) {
+        continue;
+      }
       component['unique_id']=unique_id+'_'+componentName
-     
+      component.value_template = component.value_template || `{{ valuejson.${componentName} }}` 
       if(! component.name) {
         component.name = componentName
       }
-       for(let dataname in component) {
-        if(dataname.includes('topic')) {
-          component[dataname] = AbstractDevice.getTopicCompleteName('command',unique_id,component[dataname]);
-        }
+      for(let dataname in component) {
+       if(dataname.includes('topic')) {
+         component[dataname] = AbstractDevice.getTopicCompleteName('command',unique_id,component[dataname]);
+       }
       }
       component = this.onNewComponent(componentName, component);
       components[unique_id+'_'+componentName] = component;

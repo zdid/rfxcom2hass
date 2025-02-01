@@ -284,7 +284,11 @@ export class NewDioReceiverDevice extends AbstractDevice {
         if(this.settingVirtualDevice.exists_choice === 'NEW') {
             this.settingVirtualDevice.unique_id = 'VD_'+Math.round(Math.random()*100000)
         }
-        this.settingVirtualDevice.protocol = 'DioReceiver'
+        if(this.settingVirtualDevice.is_cover === true) {
+            this.settingVirtualDevice.protocol = 'DioCover'
+        } else {
+          this.settingVirtualDevice.protocol = 'DioReceiver'
+        }
         this.devices.setVirtualDevice(this.settingVirtualDevice)
     }
 

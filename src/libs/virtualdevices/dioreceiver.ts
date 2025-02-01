@@ -8,7 +8,7 @@ import { MQTTMessage } from '../models';
 import * as utils from '../utils';
 import { Devices} from '../devices';
 import { Logger } from '../logger';
-import { VirtualDevice } from './virtualdevices';
+import { VirtualDevice } from './virtualdevice';
 import { evenement } from '../controller';
 import { SettingDioReceiver } from './settingsvirtual';
 import { AbstractDevice } from '../abstractdevice';

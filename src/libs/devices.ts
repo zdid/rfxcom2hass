@@ -6,7 +6,7 @@ import { BridgeDevice } from './bridgedevice';
 import { RfxDevice } from './rfxdevice';
 import {Logger} from './logger';
 import { NewRfxDevice } from './newrfxdevice';
-import { VirtualDevice } from './virtualdevices/virtualdevices';
+import { VirtualDevice } from './virtualdevices/virtualdevice';
 import { SettingVirtualDevice } from './virtualdevices/settingsvirtual';
 import { AbstractDevice } from './abstractdevice';
 import { getListOfNewsParameters, getNewVirtualDeviceFrom } from './virtualdevices';
@@ -76,11 +76,17 @@ export class Devices {
 
     private addDevice(dev:  SettingDevice) {
         this.devices[dev.unique_id] = new RfxDevice(this.mqtt,this.irfxcom,this.config.homeassistant,dev)
+        if(this.hassStarted) {
+            this.devices[dev.unique_id].publishAllDiscovery();
+        }
     }
     private addVirtualDevice(dev:  SettingVirtualDevice) {
         this.virtuals[dev.unique_id] = getNewVirtualDeviceFrom(this.mqtt,this.irfxcom,this.config.homeassistant,
             this,dev);
-    }
+        if(this.hassStarted) {
+            this.virtuals[dev.unique_id].publishAllDiscovery();
+        }
+       }
    
     deleteVirtualDevice(numdevice: string) {
         logger.debug(`deleteVirtualDevice de virtuals ${numdevice}`)
@@ -250,7 +256,7 @@ export class Devices {
         let virt = Object.values(this.virtuals).find((virtual:VirtualDevice) => virtual.get().name === name) ;
         return virt?virt.get():undefined;
     }
-     setBridge(evt: RfxcomInfo )  {
+    setBridge(evt: RfxcomInfo )  {
         logger.info(`setBridge evt ${JSON.stringify(evt)}`)
         this.bridgeDiscovery?.set(evt);
     }

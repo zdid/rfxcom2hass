@@ -13,8 +13,6 @@ lighting2_AC_0x017334A2_10:
     - level
     - rssi
     - switch
-    - switch
-    - switch
   commands: &a2
     switchOn: 0
     switchOff: 0
@@ -62,8 +60,6 @@ lighting2_AC_0x0156F0D6_12:
     - level
     - rssi
     - switch
-    - switch
-    - switch
   commands: *a2
   suggested_area: boutons
   exists_choice: "bouton salle à manger(esc) "
@@ -99,3 +95,85 @@ lighting2_AC_0x01570D5A_12:
     - switch
   commands: *a2
   suggested_area: bouton
+lighting1_ARC_F1:
+  protocol: lighting1
+  exists_choice: NEW
+  unique_id: lighting1_ARC_F1
+  device_id: F1
+  name: ddd
+  device_name:
+    - ARC
+  id_rfxcom: F1
+  subtype: 1
+  subtypeValue: ARC
+  repetitions: 2
+  sensors_types: []
+  commands: *a2
+  suggested_area: dddd
+  options: ""
+lighting2_AC_0x01525C02_1:
+  exists_choice: ""
+  protocol: lighting2
+  unique_id: lighting2_AC_0x01525C02_1
+  device_id: 0x01525C02/1
+  name: tel 1
+  device_name: *a1
+  id_rfxcom: 0x01525C02/1
+  subtype: 0
+  subtypeValue: AC
+  repetitions: 2
+  sensors_types:
+    - level
+    - rssi
+    - switch
+  commands: *a2
+  suggested_area: tel
+  options: ""
+rfy_RFY_0x1234:
+  protocol: rfy
+  exists_choice: NEW
+  unique_id: rfy_RFY_0x1234
+  device_id: "0x1234"
+  name: volet rfy
+  device_name: []
+  id_rfxcom: "0x1234"
+  subtype: 0
+  subtypeValue: RFY
+  repetitions: 2
+  sensors_types: []
+  commands: *a2
+  suggested_area: salon
+  options: '{"r":"l"}'
+rfy_RFY_0x12345:
+  protocol: rfy
+  exists_choice: NEW
+  unique_id: rfy_RFY_0x12345
+  device_id: "0x12345"
+  name: volet3
+  device_name: []
+  id_rfxcom: "0x12345"
+  subtype: 0
+  subtypeValue: RFY
+  repetitions: 2
+  sensors_types: []
+  commands: *a2
+  suggested_area: salle a manger
+  options: '{"truc":"t"}'
+lighting2_AC_0x01570892_11:
+  exists_choice: ""
+  protocol: lighting2
+  unique_id: lighting2_AC_0x01570892_11
+  device_id: 0x01570892/11
+  name: btn salle bibliotheque
+  device_name: *a1
+  id_rfxcom: 0x01570892/11
+  subtype: 0
+  subtypeValue: AC
+  repetitions: 2
+  sensors_types:
+    - level
+    - rssi
+    - switch
+  commands: *a2
+  suggested_area: boutons
+  options: ""

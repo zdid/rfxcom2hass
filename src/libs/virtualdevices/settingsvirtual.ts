@@ -12,3 +12,7 @@ export interface SettingDioReceiver extends SettingVirtualDevice {
     is_variator: boolean;
     is_cover: boolean;
 }
+export interface SettingCover extends SettingVirtualDevice{
+    closeduration: any;
+    openduration: any;
+}

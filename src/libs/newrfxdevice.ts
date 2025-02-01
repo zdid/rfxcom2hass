@@ -10,6 +10,7 @@ import Devices from "./devices";
 const logger = new Logger(__filename,"debug")
 
 interface SettingNew extends SettingDevice {
+      options: string;
       exists_choice: string;
       discovery?: boolean;
       message?: string;
@@ -22,10 +23,13 @@ interface SettingNew extends SettingDevice {
  * viewing ano in message on panel 
  */
 export class NewRfxDevice  extends AbstractDevice {
-    static dataNames = ['exists_choice','discovery', 'subtypevalue', // 'listsubtypevalues',
-        'protocol', // 'listpacketnames',  
-        'id_rfxcom',  'name', /* 'friendly_name', */'suggested_area',
-        //'house_code','unit_code',
+    static dataNames = ['exists_choice',
+        'discovery', 
+        'subtypevalue', 
+        'protocol',  
+        'id_rfxcom',  'name', 
+        'suggested_area',
+        'options',
         'message',
         'clicvalid', 'clicdelete','clicclear'];
       
@@ -47,7 +51,8 @@ export class NewRfxDevice  extends AbstractDevice {
         repetitions: 1,
         sensors_types: [],
         commands : [],
-        suggested_area: ''
+        suggested_area: '',
+        options:''
     } );
 
     /**
@@ -111,6 +116,9 @@ export class NewRfxDevice  extends AbstractDevice {
     setId_rfxcom(rfxIdent: string) {
         this.settingDevice.id_rfxcom = rfxIdent;
     }
+    setOptions(options: string) {
+        this.settingDevice.options =options;
+    }
     /**
      * set name from panel (need)
      * @param name for device in yaml file 
@@ -171,7 +179,7 @@ export class NewRfxDevice  extends AbstractDevice {
      * @param data 
      */
     onMQTTMessage(data: MQTTMessage): void {
-       logger.debug(`new rfx  device ${JSON.stringify(data)}`);
+       logger.debug(`onMQTTMessage newrfx ${JSON.stringify(data)}`);
        this.settingDevice.message = '';
        switch (data.command) {
         case 'set_exists_choice':
@@ -207,6 +215,9 @@ export class NewRfxDevice  extends AbstractDevice {
         case 'setsuggested_area':
             this.setSuggested_area(data.message)
             break;
+        case 'setoptions':
+            this.setOptions(data.message)
+            break;
         default:
             logger.error(`onMQTTMessage: command ${data.command} not found`)
             break;
@@ -219,11 +230,14 @@ export class NewRfxDevice  extends AbstractDevice {
      * 
      */
     protected sendData() {
+        logger.debug(`NewRfxDevice.dataNames ${NewRfxDevice.dataNames} `)
         super.publishDiscoveryAll('newrfx',NewRfxDevice.dataNames,
             this.unique_id_of_new,'New Rfx device','')
+        logger.debug(`NewRfxDevice avant publishState `)
 
         super.publishState(this.topicState,this.settingDevice)
-    }
+        logger.debug(`NewRfxDevice apres publishState `)
+   }
     /**
      * verif all data before add device 
      * @returns ano || ''
@@ -244,6 +258,13 @@ export class NewRfxDevice  extends AbstractDevice {
         }
         if(this.settingDevice.subtypeValue) {
             this.settingDevice.subtype = this.rfxtrx.getSubtypeForSubtypeValue(this.settingDevice.subtypeValue)
+        }
+        if(this.settingDevice.options && this.settingDevice.options.trim()) {
+             try {
+                JSON.parse(this.settingDevice.options.trim())
+            } catch (error) {
+                anomalie = "options parameter is a JSON string or empty"
+            }
         }
         return anomalie;
     }
@@ -270,6 +291,7 @@ export class NewRfxDevice  extends AbstractDevice {
         }
         delete(this.settingDevice.discovery);
         delete(this.settingDevice.message)
+        logger.debug(`avant appel setNewDevice, ${this.settingDevice}`)
         this.devices.setNewDevice(this.settingDevice);
      }
 
@@ -278,9 +300,9 @@ export class NewRfxDevice  extends AbstractDevice {
         super.publishDiscoveryAll('newrfx',NewRfxDevice.dataNames,
             this.unique_id_of_new,'New Rfx device','')
 
-        setTimeout(()=>{
+//        setTimeout(()=>{
             super.publishState(this.topicState,this.settingDevice)
-        }, 1000 )
+//        }, 1000 )
       }
     protected onNewComponent(componentName: string, component: any) {
         switch (componentName) {
@@ -289,15 +311,14 @@ export class NewRfxDevice  extends AbstractDevice {
                 list1.unshift('NEW');
                 component.options= list1;
             break;
-
             case 'subtypevalue':
                 let liste : any = this.rfxtrx.getAllSubtypeValues()
                 liste.unshift('NONE')
                 component.options=liste;
-                break;
+            break;
             case 'protocol':
                 component.options=this.rfxtrx.getListPacketNamesForSubtypeValue(this.settingDevice.subtypeValue||'NONE')
-                break;
+            break;
             default:
                 break;
         }
@@ -320,7 +341,8 @@ export class NewRfxDevice  extends AbstractDevice {
             sensors_types: dev.sensors_types,
             commands : dev.commands,
             suggested_area: dev.suggested_area || '',
-            message: ''
+            message: '',
+            options:dev.options || ''
         } ;
         logger.debug(`setDiscoveryDevice ${JSON.stringify(this.settingDevice)}`)
  

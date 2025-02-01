@@ -17,8 +17,8 @@ mqtt:
   qos: 0
   retain: true
   server: tcp://homeassistant.local
-  username: your
-  password: your
+  username: dimotic
+  password: G2filles
   format_json: true
 rfxcom:
   debug: false
