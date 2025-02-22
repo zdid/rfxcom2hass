@@ -301,6 +301,10 @@ bridge:
     enabled_by_default: true
     entity_category: diagnostic
     value_template: "{{ value_json.enabledProtocols }}"
+
+
+
+    
 newrfx:
   exists_choice:
     platform: select

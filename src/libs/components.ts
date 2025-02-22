@@ -1,10 +1,12 @@
 import * as fs from 'fs'
 import YAML from 'yaml'
+import { getFileFromConfig } from './settings';
 
+const COMPONENTS_YAML = 'components.yml'
 
 export class Components {
-    static components = YAML.parse(fs.readFileSync(__dirname+'/../../config/components.yml', 'utf8'));
-
+    
+    static components = getFileFromConfig(COMPONENTS_YAML);
     static get(typeDevice: string, componentName: string) {
         let comp: any;
          if(Components.components[typeDevice]) {

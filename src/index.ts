@@ -24,6 +24,9 @@ function handleQuit() {
   }
 }
 
+export function loadDev() {
+   console.log('Developpement m appelle')
+}
 process.on('SIGINT', handleQuit);
 process.on('SIGTERM', handleQuit);
 start();

@@ -49,9 +49,9 @@ export function getNewVirtualDeviceFrom(mqtt: Mqtt, irfxcom: IRfxcom,config: Set
             case 'SomfyCover':
                 retour =  new SomfyCover(mqtt, irfxcom,config,devices,dev as SettingCover)
             break;
-            case 'SomfyDioCover':
-                retour =  new SomfyDioCover(mqtt, irfxcom,config,devices,dev as SettingCover)
-            break;
+            // case 'SomfyDioCover':
+            //     retour =  new SomfyDioCover(mqtt, irfxcom,config,devices,dev as SettingCover)
+            // break;
                        
         default:
             logger.error('getNewVirtualDeviceFrom : protocol not found ' + dev.protocol);

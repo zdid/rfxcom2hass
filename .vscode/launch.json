@@ -12,7 +12,7 @@
             "runtimeArgs": [
                 "--transpile-only",
                 // if you use esm
-                //"--esm" 
+                "--esm" 
             ],
             "program": "${workspaceFolder}/src/dev.ts",
             "preLaunchTask": "tsc: build - tsconfig.json",

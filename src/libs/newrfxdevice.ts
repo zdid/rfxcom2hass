@@ -164,7 +164,7 @@ export class NewRfxDevice  extends AbstractDevice {
         this.clearDevice();
         if(rfxDeviceName !== 'NEW') {
           this.settingDevice = this.devices.getDeviceByName(rfxDeviceName) as SettingNew;
-          logger.debug(`lecture du device ${rfxDeviceName}   ${this.settingDevice}`)
+          if(logger.isDebug())logger.debug(`lecture du device ${rfxDeviceName}   ${this.settingDevice}`)
         }
         this.settingDevice.exists_choice = this.settingDevice.name || 'NEW';
         this.settingDevice.discovery = false;
@@ -179,7 +179,7 @@ export class NewRfxDevice  extends AbstractDevice {
      * @param data 
      */
     onMQTTMessage(data: MQTTMessage): void {
-       logger.debug(`onMQTTMessage newrfx ${JSON.stringify(data)}`);
+       if(logger.isDebug())logger.debug(`onMQTTMessage newrfx ${JSON.stringify(data)}`);
        this.settingDevice.message = '';
        switch (data.command) {
         case 'set_exists_choice':
@@ -223,21 +223,7 @@ export class NewRfxDevice  extends AbstractDevice {
             break;
        }
     }
-    /**
-     * send data
-     * 1) send a discovery message for create new rfx panel (for list options) 
-     * 2) send all data
-     * 
-     */
-    protected sendData() {
-        logger.debug(`NewRfxDevice.dataNames ${NewRfxDevice.dataNames} `)
-        super.publishDiscoveryAll('newrfx',NewRfxDevice.dataNames,
-            this.unique_id_of_new,'New Rfx device','')
-        logger.debug(`NewRfxDevice avant publishState `)
-
-        super.publishState(this.topicState,this.settingDevice)
-        logger.debug(`NewRfxDevice apres publishState `)
-   }
+ 
     /**
      * verif all data before add device 
      * @returns ano || ''
@@ -291,18 +277,23 @@ export class NewRfxDevice  extends AbstractDevice {
         }
         delete(this.settingDevice.discovery);
         delete(this.settingDevice.message)
-        logger.debug(`avant appel setNewDevice, ${this.settingDevice}`)
+        if(logger.isDebug())logger.debug(`avant appel setNewDevice, ${this.settingDevice}`)
         this.devices.setNewDevice(this.settingDevice);
      }
-
+   /**
+     * send data
+     * 1) send a discovery message for create new rfx panel (for list options) 
+     * 2) send all data
+     * 
+     */
+    protected sendData() { 
+        this.publishAllDiscovery();
+    }
     publishAllDiscovery() {
         logger.info(`publishAllDiscovery NewRfxDevice`)
         super.publishDiscoveryAll('newrfx',NewRfxDevice.dataNames,
             this.unique_id_of_new,'New Rfx device','')
-
-//        setTimeout(()=>{
-            super.publishState(this.topicState,this.settingDevice)
-//        }, 1000 )
+        super.publishState(this.topicState,this.settingDevice)
       }
     protected onNewComponent(componentName: string, component: any) {
         switch (componentName) {
@@ -325,7 +316,7 @@ export class NewRfxDevice  extends AbstractDevice {
         return component;
       }
     setDiscoveryDevice(dev: SettingDevice) {
-        logger.debug(`setDiscoveryDevice ${JSON.stringify(dev)}`)
+        if(logger.isDebug())logger.debug(`setDiscoveryDevice ${JSON.stringify(dev)}`)
         this.settingDevice = {
             exists_choice: dev.name || '',
             protocol: dev.protocol,
@@ -344,7 +335,7 @@ export class NewRfxDevice  extends AbstractDevice {
             message: '',
             options:dev.options || ''
         } ;
-        logger.debug(`setDiscoveryDevice ${JSON.stringify(this.settingDevice)}`)
+        if(logger.isDebug())logger.debug(`setDiscoveryDevice ${JSON.stringify(this.settingDevice)}`)
  
         this.sendData();
     }

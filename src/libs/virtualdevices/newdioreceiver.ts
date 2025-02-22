@@ -129,7 +129,7 @@ export class NewDioReceiverDevice extends AbstractDevice {
         this.sendData();
     }
     setClicDelete() {
-        logger.debug(`setClicDelete de newdioreceiver`)
+        if(logger.isDebug())logger.debug(`setClicDelete de newdioreceiver`)
         if(this.settingVirtualDevice.exists_choice != 'NONE') {
             this.devices.deleteVirtualDevice(this.settingVirtualDevice.unique_id);
         }
@@ -151,7 +151,7 @@ export class NewDioReceiverDevice extends AbstractDevice {
         this.settingVirtualDevice.appaired_str = this.settingVirtualDevice.appaired.join('\n')
     } 
     setExistsChoice(existName: string) {
-        logger.debug("setExistsChoice "+ existName);
+        if(logger.isDebug())logger.debug("setExistsChoice "+ existName);
         if(existName === "NEW") {
             this.settingVirtualDevice = JSON.parse(NewDioReceiverDevice.vide);
         } else {
@@ -201,7 +201,7 @@ export class NewDioReceiverDevice extends AbstractDevice {
     }
 
    onMQTTMessage(data: MQTTMessage): void {
-    logger.debug(`newdioreceiver  device ${JSON.stringify(data)}`);
+    if(logger.isDebug())logger.debug(`newdioreceiver  device ${JSON.stringify(data)}`);
        switch (data.command) {
         case 'set_exists_choice':
             this.setExistsChoice(data.message)
@@ -231,7 +231,7 @@ export class NewDioReceiverDevice extends AbstractDevice {
             this.subAppaired(data.message)
             break;
         case 'set_is_cover':
-            logger.debug('appel setIsCover')
+            if(logger.isDebug())logger.debug('appel setIsCover')
             this.setIsCover(data.message)
             break;
         case 'set_refappaired':

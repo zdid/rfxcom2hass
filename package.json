@@ -3,19 +3,18 @@
     "repository": "https://github.com/zdid/rfxcom2hass",
     "author": "Zdid<zdid@github.com>",
     "license": "Apache-2.0",
-    "version": "0.0.1",
+    "version": "0.2.0",
     "description": "RFXCOM to MQTT for Homeassistant",
     "main": "src/index.ts",
     "dependencies": {
-        "mqtt": "^4.3.7",
-        "object-assign-deep": "^0.4.0",
-        "rfxcom": "^2.4.1",
-        "winston": "^3.11.0",
-        "yaml": "^2.6.0",
-        "js-yaml": "^4.1.0"
+        "cross-spawn": "^7.0.6",
+        "mqtt": "^5.10.3",
+        "rfxcom": "^2.6.2",
+        "winston": "^3.17.0",
+        "yaml": "^2.7.0"
     },
     "scripts": {
-        "start": "ts-node src/index.ts"
+        "start": "node dist/index.js"
     },
     "devDependencies": {
         "@tsconfig/node18": "^18.2.2",

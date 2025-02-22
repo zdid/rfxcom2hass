@@ -77,7 +77,7 @@ export class DioReceiver extends VirtualDevice{
    */ 
   send() {
     let payload: any = {state:this.state,command: this.state, level:this.level};
-    logger.debug(`publish to mqtt: ${this.topicState}, payload ${payload}`);
+    if(logger.isDebug())logger.debug(`publish to mqtt: ${this.topicState}, payload ${payload}`);
     this.publishState(this.topicState,payload)
   }
   /**
@@ -179,7 +179,7 @@ export class DioReceiver extends VirtualDevice{
    * @param data { topic command message }
    */
   async onMQTTMessage(data: MQTTMessage){
-    logger.debug(`onMQTTMessage ${data.topic} ${data.command} ${data.message}`);
+    if(logger.isDebug())logger.debug(`onMQTTMessage ${data.topic} ${data.command} ${data.message}`);
     let value = parseInt(data.message);
     switch (data.command) {
       case 'switch':
@@ -234,7 +234,7 @@ export class DioReceiver extends VirtualDevice{
    * @param evt from rfxbridge
    */
   onRFXMessage(evt: any) {
-    logger.debug(`onRFXMessage evt: ${JSON.stringify(evt)}`)
+    if(logger.isDebug())logger.debug(`onRFXMessage evt: ${JSON.stringify(evt)}`)
     if(!this.get().is_cover) { /** on off */
       this.level = evt.level;
       this.state = evt.command;

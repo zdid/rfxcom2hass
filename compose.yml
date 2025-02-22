@@ -1,0 +1,23 @@
+services: 
+  rfxcom2hass:
+    image: zdid2/rfxcom2hass:${VERSION}
+    container_name: rfxcom2hass
+    privileged: true
+    build:  
+      context: "."
+      platforms:
+        - "linux/amd64"
+        - "linux/arm64" 
+        - "linux/armhf"
+    network_mode: host
+    environment:
+      RFXCOM2HASS_MQTT_SERVER: ftp://192.168.1.59:1883
+      #RFXCOM2HASS_MQTT_USERNAME: null
+      #RFXCOM2HASS_MQTT_PASSWORD: null
+      RFXCOM2HASS_LOG_LEVEL: info
+      TZ: Europe/Paris
+    volumes:
+      - "../rfxcom2hass_config:/app/data"
+    devices:
+      - ${DOCKERDEVICERFX:-/dev/ttyUSB0}:/dev/ttyUSB0
+    restart: unless-stopped

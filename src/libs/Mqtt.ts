@@ -1,23 +1,39 @@
 
 import * as mqtt from 'mqtt';
-import {Settings, SettingMqtt} from './settings';
-import { QoS, IClientOptions }  from 'mqtt';
-import { MqttEventListener,MQTTMessage }  from './models';
+
+import {  IClientOptions }  from 'mqtt';
 import fs from 'fs';
-import {Logger} from './logger';
+import { SettingConfig, SettingMqtt } from './settings';
 import { AbstractDevice } from './abstractdevice';
-const logger = new Logger(__filename);
+import { Logger } from './logger';
+
+
+const logger = new Logger(__filename)
+
+declare type QoS = 0 | 1 | 2
 
 interface MQTTOptions {qos?: QoS, retain?: boolean}
+
+export interface MqttEventListener{
+  subscribeTopic(): string[];
+  onMQTTMessage(data: MQTTMessage): void;
+}
+
+export interface MQTTMessage{
+  topic: string,
+  message: any,
+  command: string
+}
+
 
 export default class Mqtt{
     private defaultOptions: any;
     private client?: mqtt.MqttClient;
-    private config : Settings; 
+    private config : SettingConfig; 
     private mqttSettings: SettingMqtt;
     private listeners: MqttEventListener[] = [];
   
-    constructor(config: Settings) {
+    constructor(config: SettingConfig) {
         this.config = config;
         this.mqttSettings = config.mqtt;
     }
@@ -39,8 +55,8 @@ export default class Mqtt{
 
       this.defaultOptions = {qos: qos, retain: this.mqttSettings.retain }
       logger.info(`Connecting to MQTT server at ${this.mqttSettings.server}`);
-      const will = {'topic': AbstractDevice.getTopicCompleteName('will',''),
-           'payload': 'offline', 
+      const will = {'topic': AbstractDevice.getTopicCompleteName('will','','',this.config.homeassistant),
+           'payload': Buffer.from('offline'), 
            'qos': 1 as QoS,
            'retain': true};
       const options : IClientOptions = {'username':undefined, 'password':undefined, 'will': will};
@@ -83,12 +99,10 @@ export default class Mqtt{
         // MQTT Connect
         this.onConnect(async () => {
           logger.info('Connected to MQTT');
-          //this.subscribe(AbstractDevice.getTopicCompleteName('ecoute',this.config.homeassistant.discovery_bridge_unique_id))
-          //this.subscribe()
-           this.listeners.forEach( listener => {
+          this.listeners.forEach( listener => {
              this.subscribe(listener.subscribeTopic());
            });
-          // this.publishState('online');
+          this.publishState('online');
           this.onMessage();
           resolve();
         });
@@ -157,5 +171,7 @@ export default class Mqtt{
       logger.info('Disconnecting from MQTT server');
       this.client?.end();
     }
-  
+    stop() {
+      this.disconnect();
+    }
   }

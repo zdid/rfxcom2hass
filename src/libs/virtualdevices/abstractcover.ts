@@ -39,7 +39,7 @@ export class AbstractCover extends VirtualDevice {
     this.stopTimeout = undefined;
     this.startmovement =0;
     this.movementTimeout = undefined;
-    this.virtualDevice = 
+    this.virtualDevice = virtualDevice
   }
   /**
    * receive mqtt command opencover

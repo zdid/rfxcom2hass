@@ -52,15 +52,16 @@ export class AbstractDevice   { //implements MqttEventListener{
   
 
   static getDiscoveryOrigin() {
-    if (! this.discoveryOrigin) {
-        this.discoveryOrigin=  {
-        name: 'Rfxcom bridge', 
+    if (! AbstractDevice.discoveryOrigin) {
+        AbstractDevice.discoveryOrigin=  {
+        name: 'Arexx bridge', 
         sw: utils.getRfxcom2hassVersion(), 
         //url: 'https://zdid.github.io/rfxcom2hass/'
         };
     }
-    return this.discoveryOrigin;
+    return AbstractDevice.discoveryOrigin;
   }
+
 
   
   static getTopicCompleteName(name: string, unique_id : string,sensortype: string='', config?: SettingHass) : string {

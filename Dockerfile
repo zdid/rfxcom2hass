@@ -1,9 +1,10 @@
-FROM node:latest
+FROM node:22-bookworm-slim
 
-WORKDIR /usr/app
-COPY ./src/package.json .
-RUN npm install
-RUN npm install -g ts-node typescript
-COPY ./src .
+WORKDIR /app
+COPY ./package.json .
+RUN yarn install --production
+COPY ./dist ./dist
+COPY ./config_default ./config_default
+COPY ./src ./src
+CMD ["node", "/app/dist/index.js"]
 
-CMD ["ts-node", "index.ts"]

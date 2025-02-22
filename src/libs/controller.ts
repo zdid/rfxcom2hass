@@ -19,17 +19,21 @@
  * the elements in the file 'src/virtuals/settingsvirtual.ts'
  * 
  */
-import {Settings, SettingDevice, read} from './settings';
+import {SettingConfig, applyEnvironmentVariables, getFileFromConfig, writeFileToConfig} from './settings';
 import Mqtt from './Mqtt';
 import Rfxcom, {IRfxcom} from './rfxcombridge';
 import { RfxcomInfo,MQTTMessage, MqttEventListener } from './models';
 import utils from './utils';
-import { Logger } from './logger';
+
 import { AbstractDevice } from './abstractdevice';
 import { Devices } from './devices';
 import { EventEmitter } from 'events';
 import * as fs from 'fs';
 import YAML from 'yaml';
+import { Logger } from './logger';
+
+const CONFIG_YAML = 'config.yml';
+
 interface DataEvent {
     quoi: string;
     value: any;
@@ -42,7 +46,7 @@ export  interface ToEmit  {
     value: any
 }
 export default class Controller implements MqttEventListener{
-    private config : Settings;
+    private config : SettingConfig;
     private devices : Devices;
     private rfxBridge : IRfxcom
     private mqttClient : Mqtt
@@ -50,7 +54,6 @@ export default class Controller implements MqttEventListener{
         'seqnbr', 'subtype', 'id', 'unitCode', 'houseCode', 'commandNumber',
         'protocol', 'deviceName', 'subtypeValue', 'id_rfxcom', 'unique_id'
         ];
-    private file: string;
     private indexElementaryTopic: number;
     private indexCommand: number;
     private topicMqtt2Subscribe: string;
@@ -59,11 +62,10 @@ export default class Controller implements MqttEventListener{
   
     constructor(exitCallback: (code: number, restart: boolean) => void){
         this.exitCallback = exitCallback;
-        
-        this.file = process.env.RFXCOM2HASS_CONFIG ?? "/app/data/config.yml";
-        this.config = read(this.file);
+        this.config = getFileFromConfig(CONFIG_YAML) as SettingConfig;
+        applyEnvironmentVariables(this.config);
         logger.setLevel(this.config.loglevel);
-        logger.info("file"+this.file)
+        
         logger.info("configuration : "+JSON.stringify(this.config,null,2));
         //this.rfxBridge = this.config.mock ? new MockRfxcom(this.config.rfxcom) : new Rfxcom(this.config.rfxcom);
         this.devices = new Devices(this.config);
@@ -75,7 +77,9 @@ export default class Controller implements MqttEventListener{
             .split('/')
         this.indexElementaryTopic = temp.indexOf('%device_unique_id%');
         this.indexCommand = temp.indexOf('%sensortype%');
-        this.topicMqtt2Subscribe = AbstractDevice.getTopicCompleteName('command',this.config.homeassistant.discovery_bridge_unique_id,'toto',this.config.homeassistant)
+        this.topicMqtt2Subscribe = AbstractDevice.getTopicCompleteName('command',
+            this.config.homeassistant.discovery_bridge_unique_id,
+            'toto',this.config.homeassistant)
     }
 
     async start(): Promise<void> {
@@ -129,13 +133,13 @@ export default class Controller implements MqttEventListener{
             switch (data.quoi) {
                 case 'enabledProtocols':
                     this.config.rfxcom.enable_protocols = data.value 
-                    this.writeConfig()
+                    writeFileToConfig(CONFIG_YAML, this.config)
                     this.rfxBridge.enableRFXProtocols();
                     break;
             case 'loglevel':
                     this.config.rfxcom.debug = data.value === 'debug'? true : false
                     this.config.loglevel  = data.value
-                    this.writeConfig()
+                    writeFileToConfig(CONFIG_YAML, this.config);
                     break;
                 default:
                 break;
@@ -143,14 +147,7 @@ export default class Controller implements MqttEventListener{
         })
         logger.info('Started');
     }
-    private writeConfig() {
-        try {
-            const valyaml = YAML.stringify(this.config);
-            fs.writeFileSync(this.file, valyaml, 'utf8');
-        } catch (error) {
-            logger.error(`write config file ${this.file} failed , ${error}`)            
-        }
-    }
+    
     async stop(restart = false): Promise<void> {
  //       await this.discovery.stop();
         await this.mqttClient.disconnect();
@@ -206,7 +203,7 @@ export default class Controller implements MqttEventListener{
         if(!data.command || data.command === 'state' ) {
             return;
         }
-        logger.debug(`controller on mqtt ${JSON.stringify(data)}`)
+        if(logger.isDebug())logger.debug(`controller on mqtt ${JSON.stringify(data)}`)
         evenement.emit('MQTT:'+elementaryTopic, data)
     }
     private sendToMQTT(evt: any) {

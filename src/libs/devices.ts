@@ -1,27 +1,27 @@
-import {Settings,  SettingDevice, getSettingDeviceFromEvent } from './settings';
-import * as fs from 'fs';
-import * as  YAML from 'yaml';
+import {SettingConfig,  SettingDevice, getSettingDeviceFromEvent, getFileFromConfig, writeFileToConfig } from './settings';
 import { RfxcomInfo } from './models';
 import { BridgeDevice } from './bridgedevice';
 import { RfxDevice } from './rfxdevice';
-import {Logger} from './logger';
+
 import { NewRfxDevice } from './newrfxdevice';
 import { VirtualDevice } from './virtualdevices/virtualdevice';
 import { SettingVirtualDevice } from './virtualdevices/settingsvirtual';
 import { AbstractDevice } from './abstractdevice';
 import { getListOfNewsParameters, getNewVirtualDeviceFrom } from './virtualdevices';
+import { Logger } from './logger';
 
 const logger = new Logger(__filename);
+const VIRTUALDEVICES_YAML = 'virtualdevices.yml'
+const DEVICES_YAML = 'devices.yml'
+
 
 /**
  * Devices contains the devices detected with a flag for send to mqtt
  */
 export class Devices {
-   private config: Settings;
+   private config: SettingConfig;
     private devices: {[s: string]: RfxDevice}; 
     private virtuals:{[s: string]: VirtualDevice};
-    private fileDevices = process.env.RFXCOM2HASS_DATA_DEVICES ?? '/app/data/devices.yml';
-    private fileVirtuals = process.env.RFXCOM2HASS_DATA_VIRTUALDEVICES ?? '/app/data/virtuals.yml';
     private timer?: NodeJS.Timeout= undefined;
     private saveInterval: number;
     private isModifiedDevices: boolean; 
@@ -35,7 +35,7 @@ export class Devices {
     
     private listOfNewsParametersDevice: AbstractDevice[]
 
-    constructor( config: Settings) {
+    constructor( config: SettingConfig) {
         this.devices = {};
         this.virtuals = {};
         this.config = config;
@@ -89,14 +89,14 @@ export class Devices {
        }
    
     deleteVirtualDevice(numdevice: string) {
-        logger.debug(`deleteVirtualDevice de virtuals ${numdevice}`)
+        if(logger.isDebug())logger.debug(`deleteVirtualDevice de virtuals ${numdevice}`)
         if(this.virtuals[numdevice]) {
             this.virtuals[numdevice].publishDeleteDevice();
             delete this.virtuals[numdevice];
         }
      }
     deleteDevice(numdevice: string) {
-        logger.debug(`deleteDevice de devices ${numdevice}`)
+        if(logger.isDebug())logger.debug(`deleteDevice de devices ${numdevice}`)
         if(this.devices[numdevice]) {
             this.devices[numdevice].publishDeleteDevice();
             delete this.devices[numdevice];
@@ -105,37 +105,18 @@ export class Devices {
    private loadDevices(): void {
         let tempDevices : SettingDevice[];
         this.devices = {};
-        if (fs.existsSync(this.fileDevices)) {
- //           try {
-                tempDevices = YAML.parse(fs.readFileSync(this.fileDevices, 'utf8'));
-                logger.info(` read file ${this.fileDevices} `)
-                for(let ident in tempDevices) {
-                    logger.debug(` read ident ${ident} `)
-                   
-                    this.addDevice(tempDevices[ident]);
-                }
-            // } catch (e) {
-            //     logger.error(`Failed to load devices from file ${this.fileDevices} (corrupt file?): ${e}`);
-            // }
-        } else {
-            logger.error(`Can't load state from file ${this.fileDevices} (doesn't exist)`);
+        tempDevices = getFileFromConfig(DEVICES_YAML)
+        for(let ident in tempDevices) {
+            if(logger.isDebug())logger.debug(` read ident ${ident} `)
+            this.addDevice(tempDevices[ident]);
         }
     }
     private loadVirtuals(): void {
         let tempVirtuals : SettingVirtualDevice[];
         this.virtuals = {};
-
-        if (fs.existsSync(this.fileVirtuals)) {
-            try {
-                tempVirtuals = YAML.parse(fs.readFileSync(this.fileVirtuals, 'utf8'));
-                for(let ident in tempVirtuals) {
-                    this.addVirtualDevice(tempVirtuals[ident]);
-                }
-            } catch (e) {
-                logger.error(`Failed to load virtuals from file ${this.fileVirtuals} (corrupt file?), ${e}`);
-            }
-        } else {
-            logger.error(`Can't load virtuals from file ${this.fileVirtuals} (doesn't exist)`);
+        tempVirtuals = getFileFromConfig(VIRTUALDEVICES_YAML)
+        for(let ident in tempVirtuals) {
+            this.addVirtualDevice(tempVirtuals[ident]);
         }
     }
     private getAllSettingDevice() {
@@ -178,35 +159,17 @@ export class Devices {
     private save(): void {
         let devs = {}
         if (this.config.cacheDevices.enable  && this.isModifiedDevices === true) {
-            logger.info(`Saving devices to file ${this.fileDevices}`);
-           let tempDevices = this.devices;
-           tempDevices = {};
-              try {
-                let allDevices = this.getAllSettingDevice();
-                const valyaml = YAML.stringify(allDevices);
-                fs.writeFileSync(this.fileDevices, valyaml, 'utf8');
-                this.isModifiedDevices = false;
-            } catch (e: any) {
-                logger.error(`Failed to write devices to '${this.fileDevices}' (${e.message})`);
-            }
+           logger.info(`Saving devices to file devices.yml`);
+           let allDevices = this.getAllSettingDevice();
+           writeFileToConfig(DEVICES_YAML, this.devices)
+           this.isModifiedDevices = false;
         } 
-        else {
-            //logger.debug(`Not saving devices`);
-        }
         devs = {}
         if (this.config.cacheDevices.enable  && this.isModifiedVirtuals === true) {
-            logger.info(`Saving virtuals to file ${this.fileVirtuals}`);
-             try {
-                let allVirtuals = this.getAllSettingVirtualDevice();
-                const valyaml = YAML.stringify(allVirtuals);
-                fs.writeFileSync(this.fileVirtuals, valyaml, 'utf8');
-                this.isModifiedVirtuals = false;
-            } catch (e: any) {
-                logger.error(`Failed to write virtuals to '${this.fileVirtuals}' (${e.message})`);
-            }
-        }
-          else {
-//             logger.debug(`Not saving virtuals`);
+            logger.info(`Saving virtuals to file virtuals.yml`);
+            let allVirtuals = this.getAllSettingVirtualDevice();
+            writeFileToConfig(VIRTUALDEVICES_YAML,allVirtuals)
+            this.isModifiedVirtuals = false;
         }
     }
     existsDevice(uniq: string): boolean {
@@ -262,7 +225,7 @@ export class Devices {
     }
 
     remove(id: string ): void {
-        logger.debug(`remove entity device : `+id);
+        if(logger.isDebug())logger.debug(`remove entity device : `+id);
         delete this.devices[id];
         this.isModifiedDevices = true;
     }

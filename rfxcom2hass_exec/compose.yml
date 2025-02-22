@@ -1,0 +1,16 @@
+services: 
+  rfxcom2hass:
+    image: zdid2/rfxcom2hass:latest
+    container_name: rfxcom2hass
+    privileged: true
+    environment:
+      RFXCOM2HASS_MQTT_SERVER: ftp://homeassistant.local:1883
+      #RFXCOM2HASS_MQTT_USERNAME: null
+      #RFXCOM2HASS_MQTT_PASSWORD: null
+      RFXCOM2HASS_LOG_LEVEL: info
+      TZ: Europe/Paris
+    volumes:
+      - "./data:/app/data"
+    devices:
+      - ${DOCKERDEVICERFX:-/dev/ttyUSB0}:/dev/ttyUSB0
+    restart: unless-stopped

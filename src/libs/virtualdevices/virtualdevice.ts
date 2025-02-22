@@ -22,7 +22,7 @@ export class VirtualDevice extends AbstractDevice {
         super(mqtt, rfxtrx, config);
         this.virtualDevice = virtualDevice;
         this.devices = devices;
-        logger.debug(`deviceDiscovery new device ${JSON.stringify(this.virtualDevice)}`)
+        if(logger.isDebug())logger.debug(`deviceDiscovery new device ${JSON.stringify(this.virtualDevice)}`)
         this.topicState = AbstractDevice.getTopicCompleteName("state",this.virtualDevice.unique_id) 
         if(! Array.isArray( this.virtualDevice.appaired)) {
             this.virtualDevice.appaired = [];

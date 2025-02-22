@@ -65,8 +65,8 @@ export class RfxDevice extends AbstractDevice  {
   }
    
   async onMQTTMessage(data: MQTTMessage){
-    logger.debug(`onMQTTMessage : ${JSON.stringify(data)}`);
-    logger.debug(`onMQTTMessage this.device.commands: ${JSON.stringify(this.device.commands)}`);
+    if(logger.isDebug())logger.debug(`onMQTTMessage : ${JSON.stringify(data)}`);
+    if(logger.isDebug())logger.debug(`onMQTTMessage this.device.commands: ${JSON.stringify(this.device.commands)}`);
 
     if(data.command?.toLowerCase() === 'switch') {
       data.command = data.command?.toLowerCase() + data.message; 
@@ -74,9 +74,9 @@ export class RfxDevice extends AbstractDevice  {
     }
     let command : string | undefined= Object.keys(this.device.commands)
        .find((cmd: string) => cmd.toLowerCase()===data.command?.toLowerCase());
-    logger.debug(`onMQTTMessage find: '${command}' '${data.command}'`)
+    if(logger.isDebug())logger.debug(`onMQTTMessage find: '${command}' '${data.command}'`)
     await this.execute(command as string,data.message,(error:any, d2:any,numseq:any)=>{
-      logger.debug(`onMQTTMessage callback : error '${error}', d2 '${d2}', D3 '${numseq}'`)
+      if(logger.isDebug())logger.debug(`onMQTTMessage callback : error '${error}', d2 '${d2}', D3 '${numseq}'`)
     }) 
     
   }
