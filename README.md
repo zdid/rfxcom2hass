@@ -1,5 +1,5 @@
 # RFXCOM to MQTT bridge for home assistant
-| [![RFXCOM](documentation/rfxcom.png)](https://github.com/rfxcom/node-rfxcom) | | RFXCOM to MQTT bridge for home assistant |  | [![Homeassistant](documentation/homeassistant.png)](https://www.home-assistant.io/)|
+| [![RFXCOM](images/rfxcom.png)](https://github.com/rfxcom/node-rfxcom) | | RFXCOM to MQTT bridge for home assistant |  | [![Homeassistant](images/homeassistant.png)](https://www.home-assistant.io/)|
 | :----- | :-- | :----- | :----- | ------: |
 ||||||
 
@@ -28,7 +28,7 @@ The control panel allows you to act on:
 - Addition and removal of protocols expected by RFXCOM2HASS. The list of expected protocols is updated immediately. The diagnostics panel gives various information about the Rfxcom hardware (model, firmware version, etc.) 
 - the log level: 'debug' 'info' 'warn' 'error'
 
-![Rfxcom Bridge Panel](./documentation/rfxcombridge1.png)
+![Rfxcom Bridge Panel](./images/rfxcombridge1.png)
 
 ## New Rfx Device {#newrfxdevice}
 It allows you to add, remove, or change the features of a device. 
@@ -43,7 +43,7 @@ Ex: For a DIO element, click on discovery, press the dio button, it appears in t
 
 >for the Dio material (lighting2) I declare a piece 'buttons'. In HA I don't show it. They will allow me to declare a [ new Dio Receiver ](#newdioreceiver).<>
 
-![New Rfx Device](./documentation/newrfxdevice.png)
+![New Rfx Device](./images/newrfxdevice.png)
 
 ## New Dio Receiver(#newrfxdevice)
 It allows you to add, remove, and modify a Dio receiver.
@@ -58,7 +58,7 @@ When HA requests an action on this receiver, it is the 'Rfx Device reference' bu
 
 Once the input is complete, you must validate by clicking on the 'press' button of OK. And the receiver is added in HA in the right room.
 
-![New Dio Receiver](./documentation/newdioreceiver.png)
+![New Dio Receiver](./images/newdioreceiver.png)
 
 ## [Home Assistant Integration](./docs/usage/integrations/home_assistant.md)
 
