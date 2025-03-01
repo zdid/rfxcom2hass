@@ -3,7 +3,7 @@ services:
     image: zdid2/rfxcom2hass:latest
     container_name: rfxcom2hass
     privileged: true
-    net_mode: host
+    network_mode: host
     environment:
       RFXCOM2HASS_MQTT_SERVER: ftp://homeassistant.local:1883
       #RFXCOM2HASS_MQTT_USERNAME: null
