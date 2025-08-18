@@ -61,26 +61,40 @@ export class Logger {
             Logger.logLevel = level;
         }
     }
-    
-    warn(message: string): void {
-        // winston.config.syslog.levels doesn't have warn, but is required for syslog.
-        this.logger.warn(message);
+    formatMessage(...args: any[]): string {
+        let message = '';
+        if (args.length === 0) {
+            return message;
+        }
+        for(let i = 0; i < args.length; i++) {
+            if (typeof args[i] === 'object' && args[i] !== null) {
+                message += ' '+JSON.stringify(args[i]);
+            } else {
+                message += ' '+args[i].toString();
+            }
+        }
+        return message.trim();
+
+    }
+    warn(...args: any[]): void {
+        this.logger.warn(this.formatMessage(...args));
     }
     
-    warning(message: string): void {
-        this.logger.warn(message);
+    warning(...args: any[]): void {
+        this.logger.warn(this.formatMessage(...args));
     }
     
-    info(message: string): void {
-        this.logger.info(message);
+    info(...args: any[]): void {
+        this.logger.info(this.formatMessage(...args));
+    }
+
+       
+    debug(...args: any[]): void {
+        this.logger.debug(this.formatMessage(...args));
     }
     
-    debug(message: string): void {
-        this.logger.debug(message);
-    }
-    
-    error(message: string): void {
-        this.logger.error(message);
+    error(...args: any[]): void {
+        this.logger.error(this.formatMessage(...args));
     }
     
     isDebug() {
@@ -92,5 +106,5 @@ export class Logger {
     }
 }
 
-const logger = Logger.getLogger("AREXX2HASS");
+const logger = Logger.getLogger('main');
 export default logger;

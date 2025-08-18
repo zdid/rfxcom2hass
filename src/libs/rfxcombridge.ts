@@ -307,20 +307,23 @@ export default class Rfxcom implements IRfxcom{
             logger.info('receive '+protocol);
             evt.protocol = protocol;
             evt.deviceName = rfxcom.deviceNames[packetType][evt.subtype]
+            if(logger.isDebug() ) logger.debug('evt.protocol:', evt.protocol, 'deviceName: ',evt.deviceName);
             let deviceId = evt.id || evt.data;
-            if(evt.subtype || evt.subtype == 0) {
-              evt.subtypeValue = rfxcom[protocol][evt.subtype];
-            } else {
-              evt.subtypeValue = 'NONE'
-            }
+            //if(evt.subtype || evt.subtype == 0) {
+            evt.subtypeValue = (rfxcom[protocol] && rfxcom[protocol][evt.subtype])
+              || evt.subtype || evt.subtype === 0? evt.subtype.toString(): 'NONE';
+            //} else {
+            //  evt.subtypeValue = 'NONE'
+            //}
+            if(logger.isDebug() ) logger.debug('evt.subtypeValue: ',evt.subtypeValue);
             if(evt.houseCode && evt.unitCode) {
               evt.houseunit = evt.housecode+evt.unitCode;
             }
             evt.id_rfxcom = evt.houseunit? evt.houseunit:
                (evt.id+(evt.unitCode?'/'+evt.unitCode:''))|| evt.data;
-               
+            if( logger.isDebug() ) logger.debug('id_rfxcom: '+evt.id_rfxcom);
             /**
-             * protocol + subtypevalue (pour de nombreux type) + 
+             * protocol + subtypevalue (pour de nombreux types) + 
              * + house+unit (comme les lighting1)
              *   ou le deviceid + unit_code (comme les lighting2)
              *   ou l'evt.data (lighting 4)  
@@ -332,6 +335,8 @@ export default class Rfxcom implements IRfxcom{
                       (evt.unitCode?'_'+evt.unitCode:''):
                     (evt.data?'_'+evt.data:''))
                   );
+            
+            logger.debug('unique_id: ',evt.unique_id);
             /**
              * mise a plat des tableaux pour les modeles  (current temperature)
              */
@@ -343,6 +348,7 @@ export default class Rfxcom implements IRfxcom{
                 delete evt[name];
               }
             }
+            logger.debug('avant callback, evt: '+JSON.stringify(evt));
             callback(evt);
           });
         });
