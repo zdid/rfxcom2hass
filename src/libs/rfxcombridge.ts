@@ -298,7 +298,7 @@ export default class Rfxcom implements IRfxcom{
      * @param callback for event from rfxcom
      */
     subscribeProtocolsEvent(callback: any){
-      logger.info('RFXCOM listen event for all protocol');
+      logger.info('RFXCOM listen event for all protocols');
       this.getListPacketNames().forEach((protocol: string) => {
           if(protocol === 'status') {
             return;
