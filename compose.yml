@@ -1,3 +1,4 @@
+
 services: 
   rfxcom2hass:
     image: zdid2/rfxcom2hass:${VERSION}
@@ -11,7 +12,7 @@ services:
         - "linux/armhf"
     network_mode: host
     environment:
-      RFXCOM2HASS_MQTT_SERVER: ftp://192.168.1.59:1883
+      RFXCOM2HASS_MQTT_SERVER: ftp://192.168.1.51:1883
       #RFXCOM2HASS_MQTT_USERNAME: null
       #RFXCOM2HASS_MQTT_PASSWORD: null
       RFXCOM2HASS_LOG_LEVEL: info
