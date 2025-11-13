@@ -54,7 +54,7 @@ export class AbstractDevice   { //implements MqttEventListener{
   static getDiscoveryOrigin() {
     if (! AbstractDevice.discoveryOrigin) {
         AbstractDevice.discoveryOrigin=  {
-        name: 'Arexx bridge', 
+        name: 'RFX bridge', 
         sw: utils.getRfxcom2hassVersion(), 
         //url: 'https://zdid.github.io/rfxcom2hass/'
         };
@@ -144,7 +144,7 @@ export class AbstractDevice   { //implements MqttEventListener{
         continue;
       }
       component['unique_id']=unique_id+'_'+componentName
-      component.value_template = component.value_template || `{{ valuejson.${componentName} }}` 
+      component.value_template = component.value_template || `{{ value_json.${componentName} }}` 
       if(! component.name) {
         component.name = componentName
       }

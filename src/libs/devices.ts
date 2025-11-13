@@ -161,7 +161,8 @@ export class Devices {
         if (this.config.cacheDevices.enable  && this.isModifiedDevices === true) {
            logger.info(`Saving devices to file devices.yml`);
            let allDevices = this.getAllSettingDevice();
-           writeFileToConfig(DEVICES_YAML, this.devices)
+
+           writeFileToConfig(DEVICES_YAML, allDevices);//this.devices)
            this.isModifiedDevices = false;
         } 
         devs = {}

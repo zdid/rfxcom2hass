@@ -12,6 +12,7 @@ const logger = new Logger(__filename,"debug")
 
 interface SettingNewDioReceiver extends SettingDioReceiver {
     exists_choice: string;
+    list_exists_choice: string[];
     appaired_str: string;
     message?: string;
 }
@@ -22,8 +23,8 @@ export class NewDioReceiverDevice extends AbstractDevice {
          'name', 
          'suggested_area',
          'is_variator',
-         'appaired_str',
          'is_cover',
+         'appaired_str',
          'add_appaired',
          'sub_appaired',
          'ref_appaired',
@@ -148,7 +149,7 @@ export class NewDioReceiverDevice extends AbstractDevice {
         }
     }
     private setAppaired_str() {
-        this.settingVirtualDevice.appaired_str = this.settingVirtualDevice.appaired.join('\n')
+        this.settingVirtualDevice.appaired_str = this.settingVirtualDevice.appaired.join(', \n')
     } 
     setExistsChoice(existName: string) {
         if(logger.isDebug())logger.debug("setExistsChoice "+ existName);

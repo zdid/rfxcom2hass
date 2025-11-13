@@ -298,24 +298,38 @@ export default class Rfxcom implements IRfxcom{
      * @param callback for event from rfxcom
      */
     subscribeProtocolsEvent(callback: any){
+      
       logger.info('RFXCOM listen event for all protocols');
       this.getListPacketNames().forEach((protocol: string) => {
           if(protocol === 'status') {
             return;
           }
           this.rfxtrx.on(protocol, (evt: any, packetType: string) => {
-            logger.info('receive '+protocol);
             evt.protocol = protocol;
+            //CORRECT bug des lighting6 grouponoff pas de unitcode
+            if(evt.protocol === 'lighting2' && evt.command) {
+               switch (evt.command ) {
+                 case "Group Off":
+                   evt.commandNumber = 0;
+                   evt.command = 'Off'
+                   evt.unitCode=undefined
+                   break;
+                 case "Group On":
+                   evt.commandNumber = 1;
+                   evt.command = 'On'
+                   evt.unitCode=undefined
+                   break;
+                 default:
+                   break;
+               }
+            }
+            // FIN CORRECT
+
             evt.deviceName = rfxcom.deviceNames[packetType][evt.subtype]
-            if(logger.isDebug() ) logger.debug('evt.protocol:', evt.protocol, 'deviceName: ',evt.deviceName);
+            logger.info('reception protocol:', evt.protocol, 'deviceName: ',evt.deviceName, 'evt:', evt );
             let deviceId = evt.id || evt.data;
-            //if(evt.subtype || evt.subtype == 0) {
-            evt.subtypeValue = (rfxcom[protocol] && rfxcom[protocol][evt.subtype])
-              || evt.subtype || evt.subtype === 0? evt.subtype.toString(): 'NONE';
-            //} else {
-            //  evt.subtypeValue = 'NONE'
-            //}
-            if(logger.isDebug() ) logger.debug('evt.subtypeValue: ',evt.subtypeValue);
+            evt.subtypeValue = (rfxcom[protocol] && rfxcom[protocol][evt.subtype]) || 'NONE';
+            
             if(evt.houseCode && evt.unitCode) {
               evt.houseunit = evt.housecode+evt.unitCode;
             }
@@ -336,20 +350,20 @@ export default class Rfxcom implements IRfxcom{
                     (evt.data?'_'+evt.data:''))
                   );
             
-            logger.debug('unique_id: ',evt.unique_id);
             /**
              * mise a plat des tableaux pour les modeles  (current temperature)
              */
             for(let name in evt) {
-              if (Array.isArray(evt[name]) ){
-                for(let i = 0; i < evt[name].length; i++) {
-                  evt[name+'_'+(i+1)] = evt[name][i]        
+              if(name !== 'deviceName' ) {
+                if (Array.isArray(evt[name]) ){
+                  for(let i = 0; i < evt[name].length; i++) {
+                    evt[name+'_'+(i+1)] = evt[name][i]        
+                  }
+                  delete evt[name];
                 }
-                delete evt[name];
               }
             }
-            logger.debug('avant callback, evt: '+JSON.stringify(evt));
-            callback(evt);
+             callback(evt);
           });
         });
     }

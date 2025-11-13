@@ -4,10 +4,12 @@ import * as YAML from 'yaml'
 import Rfxcom from './rfxcombridge';
 import path from 'path';
 import { Logger } from './logger';
+import util from 'util';
 
 
 
 const logger = new Logger(__filename)
+const log = logger;
 
 
 type RecursivePartial<T> = {[P in keyof T]?: RecursivePartial<T[P]>;};
@@ -252,8 +254,12 @@ export function getFileFromConfig(fileName:string) : any {
 }
 export function writeFileToConfig(fileName: string, data: Object) {
     let cible  = (process.env.RFXCOM2HASS_DATA_PATH ?? "/app/data")+'/'+fileName
-    try {
+    log.debug('typeof data:', typeof data,util.inspect(data));
+
+    let val;
+     try {
         const valyaml = YAML.stringify(data);
+        log.debug(`writeFileToConfig ${fileName} , cible ${cible} \n valuestring `,valyaml )
         fs.writeFileSync(cible , valyaml, 'utf8');
     } catch (error) {
         logger.error(`write  file ${cible} failed , ${error}`)            

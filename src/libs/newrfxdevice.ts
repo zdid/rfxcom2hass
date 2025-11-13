@@ -168,6 +168,7 @@ export class NewRfxDevice  extends AbstractDevice {
         }
         this.settingDevice.exists_choice = this.settingDevice.name || 'NEW';
         this.settingDevice.discovery = false;
+        
         this.config.discovery = false;
         this.settingDevice.message = '';
         this.sendData();

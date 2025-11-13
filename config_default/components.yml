@@ -241,8 +241,7 @@ bridge:
     value_template: "{{ value_json.addprotocol }}"
     device_class: enum
     command_topic: addprotocol
-    options: 
-      - debug
+    options: {{ ['addprotocol'] }}
   subtractprotocol:
     platform: select
     entity_category: config
@@ -252,7 +251,7 @@ bridge:
     device_class: enum
     command_topic: subtractprotocol
     options: 
-      - debug
+      - listsubtractprotocol 
   version:
     name: Version de Rfxcom2hass 
     entity_category: diagnostic
@@ -301,10 +300,6 @@ bridge:
     enabled_by_default: true
     entity_category: diagnostic
     value_template: "{{ value_json.enabledProtocols }}"
-
-
-
-    
 newrfx:
   exists_choice:
     platform: select
@@ -440,14 +435,8 @@ newdioreceiver:
     value_template: "{{ value_json.exists_choice }}"
     device_class: enum
     command_topic: set_exists_choice
-    options:
-      - Ac
-  appaired_str:
-    platform: sensor
-    enabled_by_default: true
-    entity_category: diagnostic
-    value_template: "{{ value_json.appaired_str }}"
-    name: Appaired devices
+    options: 
+      - list_exists_choice
 
   unique_id:
     platform: sensor
@@ -508,12 +497,16 @@ newdioreceiver:
     value_template: "{{ value_json.closeduration }}"
     device_class: null
     command_topic: set_closeduration
-
-
+  appaired_str:
+    platform: text
+    entity_category: config
+    name: H) Appaired devices
+    enabled_by_default: true
+    value_template: "{{ value_json.appaired_str }}"
   add_appaired:
     platform: select
     entity_category: config
-    name: H) Add appaired Rfx Device
+    name: I) Add appaired Rfx Device
     enabled_by_default: true
     value_template: "{{ value_json.add_appaired }}"
     device_class: enum
@@ -523,7 +516,7 @@ newdioreceiver:
   sub_appaired:
     platform: select
     entity_category: config
-    name: I) Subtract appaired Rfx Device
+    name: J) Subtract appaired Rfx Device
     enabled_by_default: true
     value_template: ""
     device_class: enum
@@ -533,7 +526,7 @@ newdioreceiver:
   ref_appaired:  
     platform: select
     entity_category: config
-    name: J) Rfx Device 'reference'
+    name: K) Rfx Device 'reference'
     enabled_by_default: true
     value_template: "{{ value_json.ref_appaired }}"
     device_class: enum
@@ -544,7 +537,7 @@ newdioreceiver:
   clicvalid:
     platform: button
     entity_category: config
-    name: K) OK
+    name: L) OK
     enabled_by_default: true
     value_template: false
     payload_off: false
@@ -555,7 +548,7 @@ newdioreceiver:
   clicdelete:
     platform: button
     entity_category: config
-    name: L) Delete
+    name: M) Delete
     enabled_by_default: true
     value_template: false
     payload_off: false
@@ -566,7 +559,7 @@ newdioreceiver:
   clicclear:
     platform: button
     entity_category: config
-    name: M) Clear
+    name: N) Clear
     enabled_by_default: true
     value_template: false
     payload_off: false
