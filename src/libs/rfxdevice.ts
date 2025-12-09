@@ -41,6 +41,31 @@ export class RfxDevice extends AbstractDevice  {
     this.device.commands = Rfxcom.getFunctionsForProtocol(this.device.protocol);
     this.device.device_name = rfxtrx.getDeviceNames(this.device.protocol,this.device.subtype);
     //this.device.sensors_types = rfxtrx.get
+        //correct sensors types according to commands 
+    // it s bug originellly in newrfxdevice.ts
+    if(this.device.commands 
+      && this.device.commands.switchOn > -1 
+      && this.device.commands.switchOff >-1) {
+        this.device.sensors_types = 
+            this.device.sensors_types
+              .filter((value: string) => value != 'switch' && value != 'trigger_on' && value != 'trigger_off'
+                   && !value.startsWith('blank'))
+              .concat(["blank model=switch","blank model=trigger_on","blank model=trigger_off"]);  
+              if(logger.isDebug())logger.debug(`rfxdevice constructor,  before add sensors types :  ${this.device.sensors_types}`);                
+              if( ! this.device.as_trigger) {
+                if(logger.isDebug())logger.debug(`rfxdevice constructor,  add switch sensor type `);
+                this.device.sensors_types.push('switch')
+              } else {
+                if(logger.isDebug())logger.debug(`rfxdevice constructor,  add trigger_on and trigger_off sensor types `);
+                this.device.sensors_types = this.device.sensors_types.concat(['trigger_on','trigger_off']);
+                if(logger.isDebug())logger.debug(`rfxdevice constructor,  after add trigger sensor types :  ${this.device.sensors_types}`);
+              }
+              if(logger.isDebug())logger.debug(`rfxdevice constructor,  after add sensors types :  ${this.device.sensors_types}`);
+        }
+    if(logger.isDebug())logger.debug(`rfxdevice constructor,  after correct sensors types :  ${this.device.sensors_types}`);
+    // fin correct sensors types according to commands 
+    // it s bug originellly in newrfxdevice.ts
+
     logger.info(`deviceDiscovery new device ${JSON.stringify(this.device)}`)
   }
 
@@ -52,7 +77,10 @@ export class RfxDevice extends AbstractDevice  {
    
 
   publishAllDiscovery() {
-    logger.info(`publishAllDiscovery,  ${this.device.name}`)
+    logger.info(`publishAllDiscovery,  ${this.device.name} , ${this.device.sensors_types}}`);
+    if(logger.isDebug())logger.debug(`publishAllDiscovery,  device:  ${JSON.stringify(this.device)}`);
+
+  
     super.publishDiscoveryAll('device',
       this.device.sensors_types,
       this.device.unique_id,
@@ -66,8 +94,6 @@ export class RfxDevice extends AbstractDevice  {
    
   async onMQTTMessage(data: MQTTMessage){
     if(logger.isDebug())logger.debug(`onMQTTMessage : ${JSON.stringify(data)}`);
-    if(logger.isDebug())logger.debug(`onMQTTMessage this.device.commands: ${JSON.stringify(this.device.commands)}`);
-
     if(data.command?.toLowerCase() === 'switch') {
       data.command = data.command?.toLowerCase() + data.message; 
       data.message = undefined;

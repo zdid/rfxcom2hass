@@ -1,11 +1,12 @@
 import { AbstractDevice } from "./abstractdevice";
-import { RfxDevice } from "./rfxdevice";
+//import { RfxDevice } from "./rfxdevice";
 import { Logger } from "./logger";
 import { MQTTMessage } from "./models";
 import Mqtt from "./Mqtt";
 import Rfxcom, { IRfxcom } from "./rfxcombridge";
 import { SettingHass, SettingDevice } from "./settings";
 import Devices from "./devices";
+import { send } from "process";
 
 const logger = new Logger(__filename,"debug")
 
@@ -27,7 +28,9 @@ export class NewRfxDevice  extends AbstractDevice {
         'discovery', 
         'subtypevalue', 
         'protocol',  
-        'id_rfxcom',  'name', 
+        'id_rfxcom',
+        'name', 
+        'as_trigger',
         'suggested_area',
         'options',
         'message',
@@ -44,6 +47,7 @@ export class NewRfxDevice  extends AbstractDevice {
         unique_id: '',
         device_id: '',
         name: '',
+        as_trigger: false,
         device_name: [],
         id_rfxcom: '',
         subtype: 0,
@@ -95,6 +99,11 @@ export class NewRfxDevice  extends AbstractDevice {
      */
     setPacketName(packetName: string) {
         this.settingDevice.protocol = packetName;
+        if(this.settingDevice.protocol === 'lighting2') {
+            if (! this.settingDevice.suggested_area) {
+                this.settingDevice.suggested_area = 'Boutons';
+            }
+        }
     }
 
     /**
@@ -124,15 +133,28 @@ export class NewRfxDevice  extends AbstractDevice {
      * @param name for device in yaml file 
      */
     setName(name: string) {
-        this.settingDevice.name = name;
+        this.settingDevice.name = this.capitalizeFirstLetter(name);
         // this.sendData();
+    }
+    /**
+     * inform if device is use as trigger only
+     * @param as_trigger 
+     */
+    setAs_trigger(val: any) {
+        val = val === 'False' ? false: true
+        this.settingDevice.as_trigger = val;
+        this.sendData();
+    } 
+    capitalizeFirstLetter(val: any) {
+        val = val.toLowerCase();
+        return String(val).charAt(0).toUpperCase() + String(val).slice(1);
     }
     /**
      * suggested area is use in home assistant (need exist in home assistant)
      * @param suggested_area area, room
      */
     setSuggested_area(suggested_area: string) {
-        this.settingDevice.suggested_area = suggested_area;
+        this.settingDevice.suggested_area = this.capitalizeFirstLetter(suggested_area);
     }
     /**
      * validation clic on panel homeassistant
@@ -163,7 +185,7 @@ export class NewRfxDevice  extends AbstractDevice {
     setExistsChoice(rfxDeviceName: string) {
         this.clearDevice();
         if(rfxDeviceName !== 'NEW') {
-          this.settingDevice = this.devices.getDeviceByName(rfxDeviceName) as SettingNew;
+          this.settingDevice = this.devices.getDeviceByAreaAndName(rfxDeviceName) as SettingNew;
           if(logger.isDebug())logger.debug(`lecture du device ${rfxDeviceName}   ${this.settingDevice}`)
         }
         this.settingDevice.exists_choice = this.settingDevice.name || 'NEW';
@@ -213,6 +235,9 @@ export class NewRfxDevice  extends AbstractDevice {
         case 'setname':
             this.setName(data.message)
         break;
+        case 'setas_trigger':
+            this.setAs_trigger(data.message)
+        break;
         case 'setsuggested_area':
             this.setSuggested_area(data.message)
             break;
@@ -240,6 +265,7 @@ export class NewRfxDevice  extends AbstractDevice {
         if( ! this.settingDevice.id_rfxcom ) {
             return `no ident rfx ex: 0x12546789/1 for AC lighting2`
         }
+        //if( ! this.settingDevice.as_trigger
         if( ! this.settingDevice.subtypeValue && this.settingDevice.protocol != 'lighting4' ) {
             return `no ident rfx ex: AC for lighting2`
         }
@@ -260,6 +286,7 @@ export class NewRfxDevice  extends AbstractDevice {
      * send ano in message if not good
      */
     protected createDevice() {
+        logger.info(`createDevice NewRfxDevice ${JSON.stringify(this.settingDevice)}`)
         /* positionner le numero de subtype */
         this.settingDevice.unique_id =this.settingDevice.protocol+'_'+
             this.settingDevice.subtypeValue+'_'+
@@ -271,10 +298,21 @@ export class NewRfxDevice  extends AbstractDevice {
         }
         this.settingDevice.device_id = this.settingDevice.id_rfxcom,
         this.settingDevice.repetitions = 2;
+        
         if(this.settingDevice.commands 
             && this.settingDevice.commands.switchOn > -1 
             && this.settingDevice.commands.switchOff >-1) {
-              this.settingDevice.sensors_types.push('switch')
+               this.settingDevice.sensors_types = 
+                this.settingDevice.sensors_types
+                  .filter((value: string) => value != 'switch' && value != 'trigger_on' && value != 'trigger_off'
+                       && !value.startsWith('blank'))
+                  .concat(["blank model=switch","blank model=trigger_on","blank model=trigger_off"]);                  
+                if( ! this.settingDevice.as_trigger) {
+                  this.settingDevice.sensors_types.push('switch')
+                } else {
+                  this.settingDevice.sensors_types.push('trigger_on')
+                  this.settingDevice.sensors_types.push('trigger_off');
+                }
         }
         delete(this.settingDevice.discovery);
         delete(this.settingDevice.message)
@@ -291,15 +329,16 @@ export class NewRfxDevice  extends AbstractDevice {
         this.publishAllDiscovery();
     }
     publishAllDiscovery() {
-        logger.info(`publishAllDiscovery NewRfxDevice`)
+        logger.info(`publishAllDiscovery NewRfxDevice `)
         super.publishDiscoveryAll('newrfx',NewRfxDevice.dataNames,
             this.unique_id_of_new,'New Rfx device','')
+        logger.info(`publishAllDiscovery NewRfxDevice envoi state ${JSON.stringify(this.settingDevice)}`)
         super.publishState(this.topicState,this.settingDevice)
       }
     protected onNewComponent(componentName: string, component: any) {
         switch (componentName) {
             case 'exists_choice':
-                let list1 = Object.keys(this.devices.getAllDevicesByName());
+                let list1 = Object.keys(this.devices.getAllDevicesByAreaAndName());
                 list1.unshift('NEW');
                 component.options= list1;
             break;
@@ -325,6 +364,7 @@ export class NewRfxDevice  extends AbstractDevice {
             unique_id: dev.unique_id,
             device_id: dev.device_id,
             name: dev.name || '',
+            as_trigger: dev.as_trigger || false,
             device_name: Array.isArray(dev.device_name)?dev.device_name:[],
             id_rfxcom: dev.id_rfxcom,
             subtype: dev.subtype,
@@ -332,7 +372,7 @@ export class NewRfxDevice  extends AbstractDevice {
             repetitions: dev.repetitions,
             sensors_types: dev.sensors_types,
             commands : dev.commands,
-            suggested_area: dev.suggested_area || '',
+            suggested_area: dev.suggested_area || dev.protocol==='lighting2' ? 'Boutons' : '',
             message: '',
             options:dev.options || ''
         } ;

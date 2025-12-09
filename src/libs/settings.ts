@@ -64,10 +64,10 @@ export interface SettingRfxcom{
     enable_protocols: string[],
     transmit: {
         repeat: number,
-        lighting1: string[],
-        lighting2: string[],
-        lighting3: string[],
-        lighting4: string[],
+        // lighting1: string[],
+        // lighting2: string[],
+        // lighting3: string[],
+        // lighting4: string[],
     },
     receive: string[],
 }
@@ -77,6 +77,7 @@ export interface SettingMinDevice  {
     unique_id: string,
     device_id: string,
     name?: string,
+    as_trigger?: boolean,
     device_name?: string[],
     id_rfxcom: string,
     friendlyName?: string,
@@ -254,12 +255,12 @@ export function getFileFromConfig(fileName:string) : any {
 }
 export function writeFileToConfig(fileName: string, data: Object) {
     let cible  = (process.env.RFXCOM2HASS_DATA_PATH ?? "/app/data")+'/'+fileName
-    log.debug('typeof data:', typeof data,util.inspect(data));
+    //log.debug('typeof data:', typeof data,util.inspect(data));
 
     let val;
      try {
         const valyaml = YAML.stringify(data);
-        log.debug(`writeFileToConfig ${fileName} , cible ${cible} \n valuestring `,valyaml )
+        log.info(`writeFileToConfig ${fileName} , cible ${cible} \n valuestring `,valyaml )
         fs.writeFileSync(cible , valyaml, 'utf8');
     } catch (error) {
         logger.error(`write  file ${cible} failed , ${error}`)            

@@ -14,9 +14,10 @@ import { SettingDioReceiver } from './settingsvirtual';
 import { AbstractDevice } from '../abstractdevice';
 
 const logger = new Logger(__filename)
-
+const SETLEVEL = 'setLevel';
+const LEVEL = 'level';
 const datanames = {
-  onofflevel : ['switch', 'level', 'toogle'], 
+  //onofflevel : ['switch', 'level', 'toogle'], 
   cover : [ 'cover' ]  //opencover', 'closecover', 'stopcover', 'positioncover', 'tooglecover']
   }
 
@@ -30,6 +31,9 @@ const STATE = {
 
 const ON = 'on'
 const OFF = 'off' 
+function clone(obj: any) {
+  return JSON.parse(JSON.stringify(obj));
+} 
 
 export class DioReceiver extends VirtualDevice{
   private positionpercent: number;
@@ -56,12 +60,17 @@ export class DioReceiver extends VirtualDevice{
     this.durationopen = receiver.openduration || 8000;
     this.durationclose = receiver.closeduration || 7500;
     if(receiver.is_cover) {
-      this.virtualDevice.sensors_types = datanames.cover;
-
+      this.virtualDevice.sensors_types = clone(datanames.cover);
     } else {
-      this.virtualDevice.sensors_types= ['switch'];
-      if( receiver.is_variator ) {
+      //this.virtualDevice.sensors_types= clone(datanames.onofflevel);
+      //ces lignes ne devraient pas exister si le parametre is_variator etait bien gere a la creation du virtual device
+      //mais pour securiser le truc on verifie icicar il y a eu un bug avant
+      if( receiver.is_variator && ! this.virtualDevice.sensors_types.includes('level')) {
         this.virtualDevice.sensors_types.push('level')
+      }
+      if(!receiver.is_variator ) {
+        this.virtualDevice.sensors_types = this.virtualDevice.sensors_types.filter((cmd: any)=> cmd !==SETLEVEL && cmd !==LEVEL );
+        receiver.commands = receiver.commands.filter((cmd: string)=> cmd !==SETLEVEL && cmd !==LEVEL );
       }
     }
   }

@@ -133,19 +133,29 @@ export class Devices {
         }
         return ret;
     }
-    getAllDevicesByName(protocol? : string): any {
+    getAllDevicesByAreaAndName(protocol? : string): any {
         let ret : any = {} ;
         for(let uniqueId in this.devices) {
             let device : SettingDevice = this.devices[uniqueId].get();
-            ret[device.name as string ] = uniqueId;
+            ret[device.suggested_area +": "+(device.name as string) ] = uniqueId;
         }
         return ret;
-    }
+     }
+    // getAllDevicesByName(protocol? : string): any {
+    //     let ret : any = {} ;
+    //     for(let uniqueId in this.devices) {
+    //         let device : SettingDevice = this.devices[uniqueId].get();
+    //         ret[device.name as string ] = uniqueId;
+    //     }
+    //     return ret;
+    // }
     getAllVirtualDevicesByName(protocol? : string): any {
         let ret : any = {} ;
         for(let uniqueId in this.virtuals) {
             let virtual : SettingVirtualDevice = this.virtuals[uniqueId].get();
-            ret[virtual.name as string ] = uniqueId;
+            if(logger.isDebug())logger.debug(`getAllVirtualDevicesByName virtual ${JSON.stringify(virtual)}`)
+            let nam =  `${virtual.suggested_area}: ${virtual.name as string}`
+            ret[nam] = uniqueId;
         }
         return ret;
     }
@@ -154,7 +164,8 @@ export class Devices {
         //     return this.devices[unique_id].get().name
         // }
         // return ''
-        return this.devices[unique_id]?this.devices[unique_id].get().name:'';
+        const ref : any | undefined = this.devices[unique_id]?.get();
+        return ref?(ref.suggested_area +": "+ref.name):''; 
     }
     private save(): void {
         let devs = {}
@@ -181,8 +192,9 @@ export class Devices {
         return this.devices[uniq]?.get() || undefined;
     }
 
-    getDeviceByName(name: string) {
-        let devic = Object.values(this.devices).find((devic:RfxDevice) => devic.get().name === name) ;
+    getDeviceByAreaAndName(name: string) {
+        let devic = Object.values(this.devices)
+          .find((devic:RfxDevice) => (devic.get().suggested_area+": "+devic.get().name )=== name) ;
         return devic?devic.get():undefined;
     }
 
@@ -204,6 +216,7 @@ export class Devices {
 
     }
     setVirtualDevice(settingVirtualDevice: SettingVirtualDevice) {
+        if(logger.isDebug())logger.debug(`setVirtualDevice for ${JSON.stringify(settingVirtualDevice)}`)
         this.addVirtualDevice(settingVirtualDevice);
         this.isModifiedVirtuals = true;
         this.save();
@@ -216,8 +229,10 @@ export class Devices {
     getVirtualDevice(uniq: string): SettingVirtualDevice | undefined{
          return this.virtuals[uniq]?.get() || undefined;
     }
-    getVirtualDeviceByName(name: string): SettingVirtualDevice | undefined{
-        let virt = Object.values(this.virtuals).find((virtual:VirtualDevice) => virtual.get().name === name) ;
+    getVirtualDeviceByAreaAndName(name: string): SettingVirtualDevice | undefined{
+        let virt = Object.values(this.virtuals)
+          .find((virtual:VirtualDevice) => (virtual.get().suggested_area+": "+virtual.get().name) === name) ;
+
         return virt?virt.get():undefined;
     }
     setBridge(evt: RfxcomInfo )  {
@@ -240,21 +255,21 @@ export class Devices {
     }
  
     async publishAllDiscovery() {
+        logger.info("publishAllDiscovery debut")
         if(this.publishWait) return;
         this.publishWait = true;
-        logger.info("publishAllDiscovery attente waitReady")
         await this.bridgeDiscovery?.waitReady() 
-        logger.info("publishAllDiscovery avant bridgediscovery")
+        logger.info("publishAllDiscovery de bridgediscovery")
         this.bridgeDiscovery?.publishAllDiscovery();
-        logger.info("publishAllDiscovery avant new rfx discovery")
+        logger.info("publishAllDiscovery de newrfxdevice")
         this.newrfxDevice?.publishAllDiscovery();
-          logger.info('publish... avant les devices')
         for(let ident in this.devices) {
             logger.info(`publish... avant le device ${ident}`)
             this.devices[ident].publishAllDiscovery();
         }
-        logger.info("publishAllDiscovery avant new onoff virtual")
+
         for(let numparmdevice in this.listOfNewsParametersDevice) {
+            logger.info(`publish... avant le new parameter device ${numparmdevice}`)
             this.listOfNewsParametersDevice[numparmdevice].publishAllDiscovery();
         }
 

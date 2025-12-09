@@ -46,6 +46,7 @@ export class VirtualDevice extends AbstractDevice {
         return this.virtualDevice;
     }
     publishAllDiscovery(): void {
+        if(logger.isDebug())logger.debug(`publishAllDiscovery for virtual device ${this.virtualDevice.unique_id} , voir les sensors type ${JSON.stringify(this.virtualDevice)}`)
         super.publishDiscoveryAll('device',this.virtualDevice.sensors_types,this.virtualDevice.unique_id,
             this.virtualDevice.name||'',this.virtualDevice.protocol,this.virtualDevice.suggested_area)
     }

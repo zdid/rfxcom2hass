@@ -10,6 +10,9 @@ import { SettingDioReceiver } from "./settingsvirtual";
 
 const logger = new Logger(__filename,"debug")
 
+const SETLEVEL = 'setLevel';
+const LEVEL = 'level';
+
 interface SettingNewDioReceiver extends SettingDioReceiver {
     exists_choice: string;
     list_exists_choice: string[];
@@ -56,8 +59,8 @@ export class NewDioReceiverDevice extends AbstractDevice {
         is_variator: false,
         is_cover: false,
         repetitions: 1,
-        sensors_types: ['switch', 'level'],
-        commands : ['switchOn', 'switchOff', 'setLevel'],
+        sensors_types: ['light', LEVEL],
+        commands : ['switchOn', 'switchOff', SETLEVEL],
         suggested_area: '',
         appaired: [],
         appaired_str: '',
@@ -88,11 +91,11 @@ export class NewDioReceiverDevice extends AbstractDevice {
         this.settingVirtualDevice.unique_id = this.settingVirtualDevice.device_id = ident;
     }
     setName(name: string) {
-        this.settingVirtualDevice.name = name;
+        this.settingVirtualDevice.name = this.capitalizeFirstLetter(name);
         // this.sendData();
     }
     setSuggested_area(name: string) {
-        this.settingVirtualDevice.suggested_area = name;
+        this.settingVirtualDevice.suggested_area = this.capitalizeFirstLetter(name);
         // this.sendData();
     }
     setIsVariator(bol: string) {
@@ -138,6 +141,7 @@ export class NewDioReceiverDevice extends AbstractDevice {
     }
     setClicValid() {
         let anomalie : string = this.verifDevice();
+        logger.debug(`setClicValid de newdioreceiver anomalie=${anomalie}`) 
         this.settingVirtualDevice.message = anomalie
         if(anomalie) {
             this.sendData();
@@ -156,8 +160,9 @@ export class NewDioReceiverDevice extends AbstractDevice {
         if(existName === "NEW") {
             this.settingVirtualDevice = JSON.parse(NewDioReceiverDevice.vide);
         } else {
-            this.settingVirtualDevice = JSON.parse(JSON.stringify(this.devices.getVirtualDeviceByName(existName)))
-            this.settingVirtualDevice.exists_choice = this.settingVirtualDevice.name as string;
+
+            this.settingVirtualDevice = JSON.parse(JSON.stringify(this.devices.getVirtualDeviceByAreaAndName(existName)))
+            this.settingVirtualDevice.exists_choice = (""+this.settingVirtualDevice.name + " "+this.settingVirtualDevice.suggested_area) as string;
             this.settingVirtualDevice.is_variator = this.settingVirtualDevice.is_variator || false;
             this.settingVirtualDevice.is_cover = this.settingVirtualDevice.is_cover || false;
             this.settingVirtualDevice.ref_appaired = this.settingVirtualDevice.ref_appaired || '';
@@ -189,7 +194,7 @@ export class NewDioReceiverDevice extends AbstractDevice {
      * actions from hass dioreceiver parameters
      */   
     private convertUniqueid2Names() {
-        let namesDevices =  this.devices.getAllDevicesByName();
+        let namesDevices =  this.devices.getAllDevicesByAreaAndName();
         if(this.settingVirtualDevice.ref_appaired && this.settingVirtualDevice.ref_appaired != '') {
             this.settingVirtualDevice.ref_appaired = this.devices.getNameOfRfxDevice(this.settingVirtualDevice.ref_appaired) || '';
         }
@@ -200,9 +205,12 @@ export class NewDioReceiverDevice extends AbstractDevice {
             this.settingVirtualDevice.appaired.sort()
         }
     }
-
-   onMQTTMessage(data: MQTTMessage): void {
-    if(logger.isDebug())logger.debug(`newdioreceiver  device ${JSON.stringify(data)}`);
+    capitalizeFirstLetter(val: any) {
+        val = val.toLowerCase();
+        return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+    }
+    onMQTTMessage(data: MQTTMessage): void {
+      if(logger.isDebug())logger.debug(`newdioreceiver  device ${JSON.stringify(data)}`);
        switch (data.command) {
         case 'set_exists_choice':
             this.setExistsChoice(data.message)
@@ -256,9 +264,10 @@ export class NewDioReceiverDevice extends AbstractDevice {
  
     protected verifDevice() : string {
         let anomalie = '';
-        if( ! this.settingVirtualDevice.unique_id ||  this.settingVirtualDevice.unique_id.startsWith('VD_..') ) {
-             return 'no identifier';
-        }
+        // if( ! this.settingVirtualDevice.unique_id ||  this.settingVirtualDevice.unique_id.startsWith('VD_..') ) {
+        //      return 'no identifier';
+        // }
+        
         if( ! this.settingVirtualDevice.name ) {
              return `no name`
         }
@@ -268,15 +277,26 @@ export class NewDioReceiverDevice extends AbstractDevice {
         if(this.settingVirtualDevice.appaired.length === 0 ) {
             return `no device appaired`
         }
-        if(this.settingVirtualDevice.appaired.length === 1 ) {
+        if(this.settingVirtualDevice.appaired.length > 0 && ! this.settingVirtualDevice.ref_appaired ) {
             this.settingVirtualDevice.ref_appaired = this.settingVirtualDevice.appaired[0]
+        }
+        if( this.settingVirtualDevice.is_variator) {
+            if( ! this.settingVirtualDevice.commands.includes(SETLEVEL)) { 
+              this.settingVirtualDevice.commands.push(SETLEVEL);
+            }
+            if( ! this.settingVirtualDevice.sensors_types.includes(LEVEL)) {
+                this.settingVirtualDevice.sensors_types.push(LEVEL)
+            }
+        } else {
+            this.settingVirtualDevice.commands = this.settingVirtualDevice.commands.filter((cmd: string)=> cmd !==SETLEVEL );
+            this.settingVirtualDevice.sensors_types = this.settingVirtualDevice.sensors_types.filter((cmd: any)=>  cmd !==LEVEL );    
         }
         return anomalie;
     }
 
     protected createDevice() {
         //recuperer les identifiants à la place des noms
-        let namesDevices =  this.devices.getAllDevicesByName();
+        let namesDevices =  this.devices.getAllDevicesByAreaAndName();
         this.settingVirtualDevice.ref_appaired = namesDevices[this.settingVirtualDevice.ref_appaired];
 
         for(let num in this.settingVirtualDevice.appaired) {
@@ -300,19 +320,19 @@ export class NewDioReceiverDevice extends AbstractDevice {
         super.publishState(this.topicState,this.settingVirtualDevice)
       }
     protected onNewComponent(componentName: string, component: any) {
-
-        let liste = Object.keys(this.devices.getAllDevicesByName()).sort();
+        //logger.debug(`onNewComponent ${componentName} for newdioreceiver`   )
+        let liste = Object.keys(this.devices.getAllDevicesByAreaAndName()).sort();
         switch (componentName) {
             case 'exists_choice':
                 let liste1 : any = Object.keys(this.devices.getAllVirtualDevicesByName())
-                   .filter((name: any)  => this.settingVirtualDevice.protocol === 'DioReceiver')
+                   .filter((name: any)  => this.settingVirtualDevice.protocol === 'DioReceiver').sort()
                 liste1.unshift('NEW');
                 this.settingVirtualDevice.exists_choice = this.settingVirtualDevice.exists_choice || 'NEW'
                 component.options=liste1;
                 break;
              case 'add_appaired':
                  let liste2 : any = liste
-                    .filter((name: any)  => ! this.settingVirtualDevice.appaired.includes(name))
+                    .filter((name: any)  => ! this.settingVirtualDevice.appaired.includes(name)).sort()
                 component.options=liste2;
                break;
             case 'sub_appaired':

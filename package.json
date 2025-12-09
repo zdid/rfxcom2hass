@@ -3,7 +3,7 @@
     "repository": "https://github.com/zdid/rfxcom2hass",
     "author": "Zdid<zdid@github.com>",
     "license": "Apache-2.0",
-    "version": "0.2.1",
+    "version": "0.5.1",
     "description": "RFXCOM to MQTT for Homeassistant",
     "main": "src/index.ts",
     "dependencies": {

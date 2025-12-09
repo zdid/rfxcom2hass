@@ -47,6 +47,13 @@ export default class Mqtt{
       if (this.mqttSettings.port) {
         port = this.mqttSettings.port;
       }
+      let pos = this.mqttSettings.server.lastIndexOf(':');
+      if (pos > 0) {
+        if (!isNaN(Number(this.mqttSettings.server.substring(pos + 1)))) {
+          port = this.mqttSettings.server.substring(pos + 1);
+          this.mqttSettings.server = this.mqttSettings.server.substring(0, pos);
+        }    
+      }       
   
       let qos = 0 as QoS;
       if (this.mqttSettings.qos) {
