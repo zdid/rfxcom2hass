@@ -95,7 +95,7 @@ export class BridgeDevice extends AbstractDevice{
 
   publishAllDiscovery() {
     logger.info(`publishAllDiscovery ${Object.keys(this.sensorsDiscovery).length}`)
-    super.publishDiscoveryAll('bridge',BridgeDevice.dataNames,this.config.discovery_bridge_unique_id,'Rfxcom bridge','')
+    super.publishDiscoveryAll('bridge',BridgeDevice.dataNames,this.config.discovery_bridge_unique_id,'Rfxcom bridge','','Rfxcom Bridge')
   }
 
 

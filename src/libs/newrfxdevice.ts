@@ -331,7 +331,7 @@ export class NewRfxDevice  extends AbstractDevice {
     publishAllDiscovery() {
         logger.info(`publishAllDiscovery NewRfxDevice `)
         super.publishDiscoveryAll('newrfx',NewRfxDevice.dataNames,
-            this.unique_id_of_new,'New Rfx device','')
+            this.unique_id_of_new,'Rfx new device','','Rfx New Device')
         logger.info(`publishAllDiscovery NewRfxDevice envoi state ${JSON.stringify(this.settingDevice)}`)
         super.publishState(this.topicState,this.settingDevice)
       }
